@@ -3,7 +3,10 @@
 - **Status:** Aceito
 - **Data:** 17/10/2026
 - **Decisores:** Equipe do projeto
-- **Apoio de IA:** Rascunho elaborado com apoio de IA fora de sala, com autorização excepcional do professor, sujeito à revisão e aprovação da equipe
+- **Apoio de IA:** Elaborado com apoio de IA fora de sala, com autorização excepcional do professor; revisado e aprovado pela equipe
+- **Revisão 1 (17/10/2026):** Correções de coerência com as demais ADRs: dono da entidade registro de conteúdo e forma de obter os dados do usuário para o relatório. Feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 2 (17/10/2026):** Checklist de revisão (A3: eventos publicados pela API de Captura; D1: cabeçalho). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 3 (17/10/2026):** Coerência com as demais ADRs: mensagens internas do worker (`CapturaComErro` e pedido de início) e referência ao catálogo de eventos da ADR-008. Feita com apoio de IA fora de sala.
 
 ## Contexto
 
@@ -42,6 +45,8 @@ Tratar **extensibilidade e manutenibilidade** com as seguintes táticas:
 
    As dependências vão sempre de fora para dentro: o domínio não conhece banco, fila nem provedores. Essa estrutura é a base do diagrama de pacotes da arquitetura.
 5. **Cada serviço só acessa o próprio schema.** Cada serviço usa um usuário de banco com permissão apenas no seu schema. Dados de outro serviço são obtidos pela API ou por eventos, nunca por consulta direta às tabelas dele.
+   - O **registro de conteúdo** pertence ao Serviço de Captura, que o cria (REQ08), controla seu estado e guarda o manifesto. O Serviço de Registros e Relatórios mantém uma cópia somente de leitura dos dados de listagem e detalhes (REQ12, REQ13), atualizada pelos eventos publicados pela API de Captura (`RegistroCriado`, `CapturaConcluida`, `CapturaFalhou`, `CapturaCancelada`). As mensagens internas do worker para a API de Captura (`CapturaExecutada`, `CapturaComErro` e o pedido de início) não são consumidas por outros serviços. O catálogo completo, com produtor e consumidores de cada evento, fica na ADR-008.
+   - Os dados do usuário que aparecem no relatório (nome e CPF, REQ14) são obtidos da Identidade por API interna no momento da geração, porque o CPF fica criptografado no schema dela (ADR-007).
 6. **Repositório único com uma pasta por serviço.** Uma biblioteca compartilhada mínima, só com contratos de eventos e utilitários de observabilidade. Regras de negócio nunca são compartilhadas entre serviços.
 7. **Qualidade automatizada na integração contínua:** formatação e análise estática, testes de unidade do domínio, testes de contrato (ADR-008) e testes de integração com banco e fila em containers.
 8. **Decisões registradas.** Mudanças significativas de arquitetura passam por uma nova ADR, que substitui ou complementa as anteriores.
@@ -90,4 +95,5 @@ A regra de cada serviço acessar só o próprio schema é a decisão mais import
 
 **Negativas / riscos**
 - Relatórios que cruzam dados de vários serviços (por exemplo, consumo de créditos por registro) precisam ser montados por API ou por eventos.
+- A cópia de leitura dos registros pode ficar alguns segundos atrás do estado real na Captura, o que a tela de acompanhamento precisa considerar.
 - A regra de acesso por schema só funciona se as permissões do banco forem configuradas desde o início; depois de criada a dependência, é difícil desfazê-la.
