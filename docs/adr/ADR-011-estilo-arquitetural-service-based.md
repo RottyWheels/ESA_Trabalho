@@ -3,7 +3,10 @@
 - **Status:** Aceito
 - **Data:** 17/10/2026
 - **Decisores:** Equipe do projeto
-- **Apoio de IA:** Rascunho elaborado com apoio de IA fora de sala, com autorização excepcional do professor, sujeito à revisão e aprovação da equipe
+- **Apoio de IA:** Elaborado com apoio de IA fora de sala, com autorização excepcional do professor; revisado e aprovado pela equipe
+- **Revisão 1 (17/10/2026):** Correções de coerência com as demais ADRs: o vídeo de navegação usa alocação de sessão, não fila (ADR-004). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 2 (17/10/2026):** Checklist de revisão (B1: componentes de apoio na topologia; B6: exceção dos links de download e pool de vídeo na justificativa; D1: cabeçalho). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 3 (17/10/2026):** Coerência com a ADR-004: "escala sozinha" trocado por "de forma independente" (manual na primeira versão). Feita com apoio de IA fora de sala.
 
 ## Contexto
 
@@ -11,7 +14,7 @@ O Veridit precisa de um estilo arquitetural que atenda às quatro característic
 
 O sistema tem partes com necessidades muito diferentes:
 
-- **Captura** (REQ08 a REQ11): pesada, com navegadores no servidor e carga irregular. Precisa escalar sozinha (ADR-004).
+- **Captura** (REQ08 a REQ11): pesada, com navegadores no servidor e carga irregular. Precisa escalar de forma independente dos demais serviços (ADR-004).
 - **Créditos e pagamentos** (REQ05 a REQ07): envolve dinheiro e exige transações ACID e isolamento dos dados de faturamento (ADR-001, ADR-003).
 - **Identidade, consulta, relatórios e e-mails** (REQ01 a REQ04, REQ12 a REQ15): leves e de carga estável, mas a consulta às provas precisa continuar disponível mesmo quando a captura falha (ADR-005).
 
@@ -45,10 +48,17 @@ Adotar o estilo **service-based** (arquitetura baseada em serviços), com proces
 
 1. **Um único banco PostgreSQL**, com um schema por serviço. Cada serviço acessa só o próprio schema, com usuário de banco próprio (ADR-009). O schema de pagamentos tem credenciais isoladas (ADR-001).
 2. **Comunicação síncrona** por HTTP com JSON entre a interface, o Gateway e os serviços, para consultas e comandos rápidos.
-3. **Comunicação assíncrona** por fila (RabbitMQ) para captura, geração de relatório e zip, confirmação de pagamento e e-mails (ADR-003, ADR-004, ADR-005).
+3. **Comunicação assíncrona** por fila (RabbitMQ) para captura de tela, geração de relatório e zip, confirmação de pagamento e e-mails (ADR-003, ADR-004, ADR-005). O vídeo de navegação não usa fila: reserva um navegador de um pool, porque o usuário navega ao vivo (ADR-004).
 4. **Object storage** (MinIO, compatível com S3) para os arquivos de evidência, relatórios e zips (ADR-002, ADR-006).
 5. **Escala por serviço:** só os workers de Captura e de Registros e Relatórios escalam horizontalmente. Os demais serviços rodam com uma instância, exceto Gateway e Identidade, com duas (ADR-005).
 6. **Execução com Docker Compose** na primeira versão, com todo o sistema executável localmente.
+7. **Componentes de apoio**, que não são serviços de domínio mas fazem parte da arquitetura:
+   - cofre de segredos e de chaves, incluindo a chave de assinatura dos manifestos (ADR-001, ADR-002);
+   - proxy de sessão no Gateway para a transmissão do vídeo de navegação (ADR-002);
+   - workers de captura de tela, pool de workers de vídeo (ADR-004) e workers de relatório e zip (ADR-010);
+   - bucket imutável das evidências, bucket de relatórios e zips (ADR-010) e cópia externa das evidências (ADR-006);
+   - tarefas agendadas: reconciliação de pagamentos (ADR-003), expiração de reservas (ADR-005), verificação de integridade e testes de restauração (ADR-006);
+   - monitoramento e alertas (ADR-005).
 
 ## Metas de verificação
 
@@ -87,10 +97,10 @@ A comparação abaixo é uma avaliação da equipe para o caso do Veridit, inspi
 
 O service-based é o estilo que atende às quatro características prioritárias **sem violar a restrição de viabilidade**:
 
-- **Segurança (ADR-001):** pagamentos e dados de faturamento ficam num serviço com schema e credenciais isolados, e o Gateway é a única porta de entrada.
+- **Segurança (ADR-001):** pagamentos e dados de faturamento ficam num serviço com schema e credenciais isolados, e o Gateway é a única porta de entrada das APIs (a exceção são os links temporários de download, ADR-001).
 - **Integridade (ADR-002):** só o Serviço de Captura produz evidências e calcula hashes; Registros e Relatórios apenas lê e empacota. A divisão facilita aplicar e auditar a regra de imutabilidade.
 - **Confiabilidade transacional (ADR-003):** cada serviço usa transações ACID no próprio schema. O saldo de créditos fica consistente sem sagas nem transações distribuídas, que os microsserviços exigiriam.
-- **Escalabilidade da captura (ADR-004):** a captura é um serviço separado, alimentado por fila, que escala sozinho.
+- **Escalabilidade da captura (ADR-004):** a captura é um serviço separado, com fila para capturas de tela e pool de navegadores para vídeo, que escala de forma independente (manualmente na primeira versão, ADR-004).
 
 A escalabilidade da captura é a razão técnica mais forte para não usar um monólito. A confiabilidade transacional e a viabilidade são as razões mais fortes para não usar microsserviços. O service-based fica no meio: traz a modularidade, o isolamento de falhas e a escala seletiva dos serviços com uma fração do custo operacional dos microsserviços.
 
