@@ -3,7 +3,10 @@
 - **Status:** Aceito
 - **Data:** 17/10/2026
 - **Decisores:** Equipe do projeto
-- **Apoio de IA:** Rascunho elaborado com apoio de IA fora de sala, com autorização excepcional do professor, sujeito à revisão e aprovação da equipe
+- **Apoio de IA:** Elaborado com apoio de IA fora de sala, com autorização excepcional do professor; revisado e aprovado pela equipe
+- **Revisão 1 (17/10/2026):** Correções de coerência com as demais ADRs: impacto da queda do Mercado Pago alinhado à ADR-005 (compras ficam indisponíveis). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 2 (17/10/2026):** Checklist de revisão (D1: cabeçalho). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 3 (17/10/2026):** Coerência com as demais ADRs: catálogo de eventos com produtor e consumidores (item 6) e evento `PagamentoEstornado` na camada anticorrupção (item 2). Feita com apoio de IA fora de sala.
 
 ## Contexto
 
@@ -39,11 +42,22 @@ Tratar **interoperabilidade** com as seguintes táticas:
    | `NavegadorCaptura` | Playwright com Chromium | Captura |
    | `ArmazenamentoEvidencias` | API S3 (MinIO) | Captura, Registros e Relatórios |
 
-2. **Camada anticorrupção para webhooks.** Cada provedor de pagamento tem um endpoint de webhook próprio, que valida a assinatura, consulta o provedor (ADR-003) e traduz a notificação para um evento interno único (`PagamentoAprovado`, `PagamentoRecusado`, `PagamentoExpirado`). O restante do sistema não conhece os formatos do Mercado Pago.
+2. **Camada anticorrupção para webhooks.** Cada provedor de pagamento tem um endpoint de webhook próprio, que valida a assinatura, consulta o provedor (ADR-003) e traduz a notificação para um evento interno único (`PagamentoAprovado`, `PagamentoRecusado`, `PagamentoExpirado`, `PagamentoEstornado`). O restante do sistema não conhece os formatos do Mercado Pago.
 3. **Um provedor de Pix na primeira versão.** O Pix é gerado pelo Mercado Pago, o mesmo provedor do checkout, para ter um único contrato, um único webhook e uma única reconciliação. Outro PSP pode ser adicionado depois como novo adaptador.
 4. **Protocolos e padrões abertos:** API S3 para storage, SMTP para e-mail, HTTP com JSON para APIs, JWT para autenticação (pronto para OpenID Connect no futuro, ADR-001).
 5. **Contratos das APIs internas** documentados em OpenAPI, com versão no caminho (`/v1/...`). Mudanças incompatíveis exigem uma nova versão, mantida em paralelo até todos os consumidores migrarem.
-6. **Eventos com esquema versionado.** Cada mensagem na fila tem tipo, versão do esquema, id único (para idempotência) e data/hora. Consumidores ignoram campos que não conhecem.
+6. **Eventos com esquema versionado.** Cada mensagem na fila tem tipo, versão do esquema, id único (para idempotência) e data/hora. Consumidores ignoram campos que não conhecem. Os eventos da primeira versão são estes; um evento novo entra nesta tabela antes de ser usado:
+
+   | Evento | Produtor | Consumidores |
+   |---|---|---|
+   | `PagamentoAprovado` | Créditos e Pagamentos (outbox, ADR-003) | Notificação (e-mail de confirmação, REQ07) |
+   | `PagamentoRecusado`, `PagamentoExpirado`, `PagamentoEstornado` | Camada anticorrupção de Créditos e Pagamentos | O próprio Serviço de Créditos e Pagamentos (máquina de estados e livro-razão, ADR-003) |
+   | `CreditoDevolvido` | Créditos e Pagamentos (outbox, ADR-003) | Nenhum obrigatório na primeira versão; fica disponível para aviso ao usuário |
+   | `RegistroCriado` | API de Captura (outbox) | Registros e Relatórios (cópia de leitura, ADR-009) |
+   | `CapturaConcluida` | API de Captura (outbox) | Registros e Relatórios (cópia de leitura e geração de relatório e zip, ADR-010), Créditos e Pagamentos (consumo da reserva, ADR-003), Notificação (e-mail com o hash do manifesto, REQ10, REQ11, ADR-002) |
+   | `CapturaFalhou`, `CapturaCancelada` | API de Captura (outbox) | Registros e Relatórios (cópia de leitura), Créditos e Pagamentos (devolução da reserva, ADR-003) |
+   | `CapturaExecutada`, `CapturaComErro` | Worker de captura | Só a API de Captura (ADR-002) |
+   | Pedido de início da captura de tela (pedido e resposta) | Worker de captura | Só a API de Captura, que responde se o worker pode começar (ADR-002) |
 7. **Configuração externa.** Credenciais, URLs e escolha do adaptador ficam em variáveis de ambiente ou no cofre de segredos (ADR-001), não no código.
 8. **Testes de contrato** contra os ambientes de teste (sandbox) dos provedores e entre os serviços internos, executados na integração contínua.
 
@@ -78,7 +92,7 @@ Esta ADR também resolve uma ambiguidade dos requisitos: o REQ06 fala em gerar P
 | Troca ou inclusão de provedores sem mexer nas regras de negócio | **Mais código:** interfaces, adaptadores e tradutores para cada integração |
 | Formatos externos não vazam para o resto do sistema | **Menor aproveitamento:** recursos específicos de um provedor ficam escondidos atrás da interface comum |
 | APIs e eventos documentados e versionados | **Manutenção:** contratos e versões paralelas precisam ser mantidos e testados |
-| Um único provedor de pagamento simplifica a primeira versão | **Dependência:** concentrar checkout e Pix no Mercado Pago aumenta o impacto se ele ficar fora do ar (atenua a tática de degradação da ADR-005) |
+| Um único provedor de pagamento simplifica a primeira versão | **Dependência:** concentrar checkout e Pix no Mercado Pago aumenta o impacto se ele ficar fora do ar: as compras param até ele voltar (ADR-005) |
 
 ## Consequências
 
@@ -88,5 +102,5 @@ Esta ADR também resolve uma ambiguidade dos requisitos: o REQ06 fala em gerar P
 - Os contratos OpenAPI servem de documentação para as etapas de implementação e evolução.
 
 **Negativas / riscos**
-- Com Pix e checkout no mesmo provedor, a alternativa de pagamento da ADR-005 só existe se o Mercado Pago estiver no ar; uma queda total dele impede compras.
+- Com Pix e checkout no mesmo provedor, não há meio de pagamento alternativo: uma queda do Mercado Pago impede compras, e a ADR-005 trata isso como degradação controlada. Um segundo provedor de Pix é a evolução prevista.
 - Os ambientes de teste dos provedores nem sempre reproduzem o comportamento real dos webhooks.
