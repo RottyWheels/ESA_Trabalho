@@ -1,9 +1,10 @@
-# ADR-004: Escalabilidade e elasticidade da captura como característica arquitetural prioritária
+# ADR-004: Escalabilidade da captura como característica arquitetural prioritária
 
-- **Status:** Proposto
+- **Status:** Aceito
 - **Data:** 13/10/2026
 - **Decisores:** Equipe do projeto
 - **Apoio de IA:** Rascunho elaborado com apoio de IA em sala, sujeito à revisão e aprovação da equipe
+- **Revisão 1 (17/10/2026):** Título alterado de "Escalabilidade e elasticidade" para "Escalabilidade da captura" (a escala automática fica como evolução), separação entre fila para capturas de tela e alocação de sessão para vídeo, isolamento de cada captura e metas de verificação. Revisão feita com apoio de IA fora de sala, com autorização excepcional do professor.
 
 ## Contexto
 
@@ -26,16 +27,27 @@ Como a captura precisa ser feita no servidor para garantir a integridade da evid
 
 ## Decisão
 
-Adotar **Escalabilidade e elasticidade da captura** como característica arquitetural prioritária (4ª do top 4), implementada pelos seguintes mecanismos:
+Adotar **Escalabilidade da captura** como característica arquitetural prioritária (4ª do top 4), implementada pelos seguintes mecanismos:
 
 1. **Separar a API do Serviço de Captura dos workers.** A API, leve, recebe pedidos, valida a reserva de créditos e mostra o status. Os workers, pesados, executam o navegador.
-2. **Fila de trabalhos** (RabbitMQ) entre a API e os workers, absorvendo picos sem rejeitar pedidos.
-3. **Workers sem estado entre trabalhos e em containers**, com Playwright e Chromium. Cada worker tem um limite fixo de capturas simultâneas e de memória.
-4. **Escala horizontal** pelo número de workers, aumentado ou reduzido conforme o tamanho da fila (manualmente com Docker Compose na primeira versão, automaticamente em um orquestrador numa evolução).
+2. **Fila de trabalhos** (RabbitMQ) entre a API e os workers para as **capturas de tela**, absorvendo picos sem rejeitar pedidos. O vídeo de navegação segue o item 7, porque o usuário precisa estar presente.
+3. **Workers sem estado entre trabalhos e em containers**, com Playwright e Chromium. Cada worker tem um limite fixo de capturas simultâneas e de memória. O estado de uma sessão de vídeo existe só enquanto ela dura.
+   - Cada captura roda num navegador novo, em container sem privilégios e numa rede isolada, descartado ao final (ADR-001, ADR-002). Isso protege a rede interna contra URLs maliciosas e garante um ambiente limpo para cada prova.
+4. **Escala horizontal** pelo número de workers, aumentado ou reduzido manualmente com Docker Compose na primeira versão. A **elasticidade** (escala automática) fica como evolução, num orquestrador, usando como gatilho o tamanho da fila de tela e a ocupação do pool de vídeo.
 5. **Envio direto ao object storage** (MinIO ou compatível com S3) a partir do worker, sem passar os arquivos pela API nem pelo banco.
 6. **Limites operacionais:** timeout de carregamento de página, duração máxima do vídeo e tamanho máximo de arquivo, para que uma captura não monopolize um worker.
-7. **Vídeo de navegação** em sessão interativa presa a um worker durante toda a gravação. O worker só é desligado depois de concluir ou cancelar as sessões em andamento.
+7. **Vídeo de navegação por alocação de sessão, não por fila.** Como o usuário navega ao vivo (ADR-002), a captura de vídeo reserva um navegador livre num pool de workers de vídeo, com limite de sessões simultâneas. Sem navegador livre, o usuário vê a posição de espera ou é convidado a tentar depois, em vez de entrar numa fila longa. A sessão fica presa ao worker durante a gravação, e o worker só é desligado depois de concluir ou cancelar as sessões em andamento.
 8. **Relatório e zip** (REQ14, REQ15) gerados por workers assíncronos do Serviço de Registros e Relatórios, que escalam do mesmo modo.
+
+## Metas de verificação
+
+| Item | Meta inicial |
+|---|---|
+| Espera na fila de captura de tela | Até 2 minutos em 95% dos casos, no cenário de referência |
+| Início de sessão de vídeo | Navegador alocado em até 10 segundos quando houver vaga no pool |
+| Pico de captura | Login, listagem e download mantêm as metas da ADR-010 durante o pico |
+| Inclusão de worker | Aumenta a vazão de capturas sem mudança de código ou de outro serviço |
+| Capturas com navegador reaproveitado de outra captura | Zero |
 
 ## Alternativas consideradas
 
@@ -45,6 +57,7 @@ Adotar **Escalabilidade e elasticidade da captura** como característica arquite
 | Escala vertical (um servidor maior) | Tem limite físico, é ponto único de falha e o custo não acompanha a demanda: paga-se pelo pico o tempo todo. |
 | Funções serverless (AWS Lambda e similares) | Limite de tempo de execução e de memória, cold start do navegador e falta de suporte a sessões interativas longas tornam o vídeo inviável. |
 | Escalar o sistema inteiro junto (monólito replicado) | Desperdiça recursos replicando partes leves para atender a parte pesada. |
+| Fila única para tela e vídeo | Mais simples, mas o usuário do vídeo ficaria esperando na frente da tela sem previsão, e a sessão poderia começar quando ele já tivesse saído. |
 | Priorizar disponibilidade em vez de escalabilidade no top 4 | A disponibilidade é atendida em boa parte pelo isolamento dos serviços e pela fila desta mesma decisão. A escalabilidade da captura é o requisito que mais influencia o desenho dos componentes. |
 
 ## Justificativa
@@ -74,6 +87,7 @@ A arquitetura service-based permite essa decisão sem a complexidade dos micross
 - Relatório e zip seguem o mesmo padrão assíncrono, deixando o modelo de processamento uniforme.
 
 **Negativas / riscos**
-- A escala automática fica fora da primeira versão e precisará de um orquestrador e de uma nova ADR.
+- A escala automática (elasticidade) fica fora da primeira versão e precisará de um orquestrador e de uma nova ADR.
+- Criar um container ou navegador novo por captura aumenta o tempo de início de cada captura, o que precisa ser medido.
 - Os valores dos limites (duração do vídeo, timeouts, capturas simultâneas por worker) não estão nos requisitos e precisam ser definidos e validados.
 - O uso de recursos do Chromium em produção precisa ser medido cedo, para dimensionar os workers e estimar o custo por registro.
