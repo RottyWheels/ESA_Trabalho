@@ -3,8 +3,11 @@
 - **Status:** Aceito
 - **Data:** 13/10/2026
 - **Decisores:** Equipe do projeto
-- **Apoio de IA:** Rascunho elaborado com apoio de IA em sala, sujeito à revisão e aprovação da equipe
+- **Apoio de IA:** Elaborado com apoio de IA em sala; revisado e aprovado pela equipe
 - **Revisão 1 (17/10/2026):** Pix por meio de provedor de serviços de pagamento, detalhes da reserva de créditos (chamada síncrona, idempotência e expiração), regra para estorno de pagamento com créditos já usados e metas de verificação. Revisão feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 2 (17/10/2026):** Correções de coerência com as demais ADRs: conversão da reserva feita pela API de Captura, momento da reserva no vídeo, prazos de expiração por estado do registro e nome do evento `PagamentoAprovado` (ADR-008). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 3 (17/10/2026):** Checklist de revisão (A2: consumo e devolução por evento com outbox; A4: devolução no cancelamento; A5: verificação de `NA_FILA` só na captura de tela; D1: cabeçalho). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 4 (17/10/2026):** Coerência com as demais ADRs: termos separados (devolução da reserva × estorno do pagamento no provedor), evento `CreditoEstornado` renomeado para `CreditoDevolvido`, eventos que pedem consumo e devolução nomeados, `PagamentoEstornado` no item 9 e início da captura de tela autorizado pela API de Captura. Feita com apoio de IA fora de sala.
 
 ## Contexto
 
@@ -29,18 +32,19 @@ Na arquitetura service-based, o saldo fica no Serviço de Créditos e Pagamentos
 
 Adotar **Confiabilidade transacional de pagamentos e créditos** como característica arquitetural prioritária (3ª do top 4), implementada pelos seguintes mecanismos:
 
-1. **Livro-razão de créditos somente de inclusão.** Cada movimentação (compra, reserva, consumo, estorno) é um lançamento imutável. O saldo é calculado a partir dos lançamentos ou mantido em cache dentro da mesma transação.
+1. **Livro-razão de créditos somente de inclusão.** Cada movimentação (compra, reserva, consumo, devolução da reserva e débito por estorno do pagamento) é um lançamento imutável. Nesta ADR, **devolução** é a reserva desfeita quando a captura falha ou é cancelada; **estorno** é só o pagamento desfeito ou contestado no provedor (item 9). O saldo é calculado a partir dos lançamentos ou mantido em cache dentro da mesma transação.
 2. **Máquina de estados do pagamento:** `PENDENTE` → `APROVADO` | `RECUSADO` | `EXPIRADO`, e `APROVADO` → `ESTORNADO`. Transições inválidas são rejeitadas.
 3. **Idempotência nos webhooks.** O id do pagamento no Mercado Pago ou o identificador da transação Pix (txid) é chave única. Receber a mesma notificação de novo não gera crédito em dobro.
 4. **Validação da origem do webhook** (assinatura ou segredo) e **consulta ativa ao provedor** antes de aprovar. O sistema nunca confia apenas no conteúdo da notificação nem no redirecionamento do navegador.
 5. **Reconciliação periódica.** Uma tarefa agendada consulta no provedor os pagamentos `PENDENTE` antigos, para recuperar webhooks perdidos e marcar Pix expirados.
-6. **Reserva → consumo → estorno.** Ao iniciar o registro (REQ08), o crédito é reservado. Ao concluir (REQ09, REQ11), a reserva vira consumo. Se a captura falhar, a reserva é desfeita e o crédito volta.
-   - A reserva é uma chamada síncrona do Serviço de Captura ao de Créditos, feita antes de o trabalho entrar na fila. Se Créditos estiver fora do ar, a captura não começa e o usuário recebe uma mensagem clara (ADR-005).
+6. **Reserva → consumo ou devolução.** Ao iniciar o registro (REQ08), o crédito é reservado. Ao concluir (REQ09, REQ11), a API de Captura converte a reserva em consumo. Se a captura falhar ou for cancelada pelo usuário, a reserva é desfeita, o crédito volta e o conteúdo parcial é descartado.
+   - A reserva é uma chamada síncrona da API de Captura ao Serviço de Créditos, feita antes de o trabalho de captura de tela entrar na fila e, no vídeo, logo depois de um navegador do pool ser alocado (ADR-004). Se Créditos estiver fora do ar, a captura não começa e o usuário recebe uma mensagem clara (ADR-005).
    - Reserva, consumo e devolução são idempotentes pelo id do registro: repetir a mesma operação não reserva nem devolve duas vezes.
-   - Reservas que não forem concluídas dentro do tempo máximo da captura são desfeitas automaticamente, para que a queda de um worker não prenda créditos (ADR-005).
-7. **Outbox transacional.** Os eventos `PagamentoConfirmado` e `CreditoEstornado` são gravados na mesma transação da mudança de estado e só depois publicados na fila. Isso garante o e-mail de confirmação (REQ07) sem perder nem duplicar eventos.
+   - A reserva é a única chamada síncrona. A conversão em consumo e a devolução são pedidas por evento (`CapturaConcluida`, `CapturaFalhou` ou `CapturaCancelada`, catálogo na ADR-008), gravado com outbox (item 7) na mesma transação que muda o estado do registro. Se Créditos estiver fora do ar, o registro é concluído normalmente e o consumo é aplicado quando ele voltar.
+   - Reservas presas são desfeitas automaticamente (ADR-005), com prazos contados por estado do registro: um prazo para sair de `NA_FILA` e outro, a partir de `EM_ANDAMENTO`, sempre maior que o tempo limite do worker. Antes de começar uma captura de tela, o worker pede à API de Captura, pelo broker, que passe o registro de `NA_FILA` para `EM_ANDAMENTO` (ADR-002); se o registro já tiver sido cancelado ou expirado, a API recusa e o trabalho é descartado. Assim, nenhuma captura roda depois de a reserva ser desfeita.
+7. **Outbox transacional.** Os eventos do Serviço de Créditos (`PagamentoAprovado` e `CreditoDevolvido`) e os da API de Captura (item 6) são gravados na mesma transação da mudança de estado e só depois publicados na fila. Isso garante o e-mail de confirmação (REQ07) sem perder nem duplicar eventos.
 8. **Preço congelado na compra.** O valor e a quantidade de créditos do pacote são copiados para o pedido no momento da compra, para que mudanças futuras nos pacotes (D2) não alterem compras já feitas.
-9. **Estorno pelo provedor com créditos já usados.** Se um pagamento aprovado for estornado ou contestado no provedor, os créditos daquela compra são debitados no livro-razão. Se já tiverem sido usados, o saldo fica negativo e novas capturas ficam bloqueadas até a regularização. Os registros já feitos continuam acessíveis ao usuário.
+9. **Estorno pelo provedor com créditos já usados.** Se um pagamento aprovado for estornado ou contestado no provedor, o evento `PagamentoEstornado` (ADR-008) faz os créditos daquela compra serem debitados no livro-razão. Se já tiverem sido usados, o saldo fica negativo e novas capturas ficam bloqueadas até a regularização. Os registros já feitos continuam acessíveis ao usuário.
 
 ## Metas de verificação
 
@@ -49,7 +53,8 @@ Adotar **Confiabilidade transacional de pagamentos e créditos** como caracterí
 | Webhook repetido (mesmo id de pagamento ou txid) | Nenhum crédito em dobro em teste com 1.000 repetições |
 | Webhook perdido | Pagamento aprovado reconhecido pela reconciliação em até 30 minutos |
 | Captura que falha | Crédito devolvido em 100% dos casos |
-| Reserva presa por queda de worker | Desfeita automaticamente após o tempo máximo da captura |
+| Reserva presa por queda de worker | Desfeita automaticamente após o prazo do estado em que o registro parou |
+| Captura executada depois de a reserva ser desfeita | Zero |
 | Saldo calculado pelo livro-razão | Igual ao saldo em cache em 100% das verificações diárias |
 
 ## Alternativas consideradas
@@ -59,7 +64,7 @@ Adotar **Confiabilidade transacional de pagamentos e créditos** como caracterí
 | Campo `saldo` atualizado diretamente (somar e subtrair) | Mais simples, mas não deixa histórico, fica sujeito a erros de concorrência e não permite reconstruir ou auditar o saldo. |
 | Confirmar o pagamento pelo redirecionamento do checkout | O navegador do usuário não é fonte confiável: o redirecionamento pode ser forjado ou nem acontecer. |
 | Transação distribuída entre serviços (2PC) | Garante atomicidade, mas acopla os serviços, reduz a disponibilidade e tem pouco suporte em brokers e provedores externos. |
-| Debitar o crédito só ao concluir a captura | Evita estorno, mas permite iniciar várias capturas com saldo para uma só e consumir recursos sem garantia de pagamento. |
+| Debitar o crédito só ao concluir a captura | Evita a devolução, mas permite iniciar várias capturas com saldo para uma só e consumir recursos sem garantia de pagamento. |
 | Confiabilidade fora do top 4 | Erros financeiros afetam diretamente a confiança do cliente e geram reclamações e estornos. São inaceitáveis em um produto pago. |
 
 ## Justificativa
