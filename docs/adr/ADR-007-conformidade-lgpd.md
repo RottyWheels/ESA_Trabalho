@@ -3,7 +3,10 @@
 - **Status:** Aceito
 - **Data:** 17/10/2026
 - **Decisores:** Equipe do projeto
-- **Apoio de IA:** Rascunho elaborado com apoio de IA fora de sala, com autorização excepcional do professor, sujeito à revisão e aprovação da equipe
+- **Apoio de IA:** Elaborado com apoio de IA fora de sala, com autorização excepcional do professor; revisado e aprovado pela equipe
+- **Revisão 1 (17/10/2026):** Correções de coerência com as demais ADRs: regra única para as evidências no encerramento da conta, retenção dos relatórios e zips gerados (ADR-010) e expurgo também na cópia externa (ADR-006). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 2 (17/10/2026):** Checklist de revisão (B4: prazo dos backups do banco separado da cópia externa das evidências; D1: cabeçalho). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 3 (17/10/2026):** Coerência com a ADR-001: hash com chave (HMAC) do CPF para impedir cadastro duplicado com o CPF criptografado (item 3 e trade-offs). Feita com apoio de IA fora de sala.
 
 ## Contexto
 
@@ -35,20 +38,21 @@ Tratar **conformidade legal e privacidade** com as seguintes táticas:
    - Faturamento: execução de contrato e cumprimento de obrigação legal (fiscal).
    - Evidências, inclusive dados de terceiros: exercício regular de direitos em processo judicial ou administrativo.
    - E-mails de confirmação (REQ07, 10, 11): execução de contrato. Comunicações de marketing só com consentimento separado.
-3. **Segregação e criptografia.** Os dados de faturamento ficam no schema isolado de pagamentos (ADR-001). CPF e telefone são criptografados na aplicação antes de gravar no banco, com chaves fora do banco.
+3. **Segregação e criptografia.** Os dados de faturamento ficam no schema isolado de pagamentos (ADR-001). CPF e telefone são criptografados na aplicação antes de gravar no banco, com chaves fora do banco. Para impedir cadastro duplicado sem decifrar todos os registros, o Serviço de Identidade guarda também um hash do CPF com chave secreta (HMAC), que só serve para busca por igualdade e não permite recuperar o número.
 4. **Logs sem dados pessoais.** CPF, e-mail, endereço e tokens são mascarados nos logs e nas mensagens de erro. A trilha de auditoria (ADR-002) usa o id do usuário, não o CPF.
 5. **Política de retenção por tipo de dado:**
 
    | Dado | Retenção |
    |---|---|
-   | Cadastro | Enquanto a conta estiver ativa; depois do encerramento, anonimizado |
+   | Cadastro | Enquanto a conta estiver ativa; anonimizado ao fim dos 30 dias para download após o encerramento |
    | Faturamento e pagamentos | Pelo prazo exigido pela legislação fiscal (em geral 5 anos), depois excluído |
-   | Evidências e manifestos | Pelo prazo contratado com o cliente (proposta inicial: 5 anos), renovável, depois expurgados |
+   | Evidências e manifestos | Pelo prazo contratado com o cliente (proposta inicial: 5 anos), renovável, ou até 30 dias depois do encerramento da conta, o que vier primeiro; depois expurgados |
+   | Relatórios e zips gerados | Mesmo prazo das evidências; podem ser apagados e gerados de novo a qualquer momento (ADR-010) |
    | Trilha de auditoria | Mesmo prazo das evidências a que se refere |
-   | Backups | Expiram em até 35 dias, para que exclusões cheguem também às cópias |
+   | Backups do banco | Expiram em até 35 dias, para que exclusões cheguem também às cópias. A cópia externa das evidências (ADR-006) não é backup do banco e segue o prazo das evidências |
 
-6. **Expurgo controlado das evidências.** O bloqueio de escrita do object storage usa o modo que permite exclusão só por um papel administrativo específico. Toda exclusão antes do prazo exige pedido do titular ou ordem judicial, aprovação de duas pessoas e registro na trilha de auditoria. Depois da exclusão, fica guardado só o id do registro, o hash do manifesto e o motivo, sem conteúdo nem dados pessoais.
-7. **Direitos do titular na plataforma.** O usuário pode ver e baixar seus dados cadastrais, corrigir cadastro e faturamento, e pedir o encerramento da conta. No encerramento, o sistema avisa que as evidências serão excluídas e oferece o download do zip antes.
+6. **Expurgo controlado das evidências.** O bloqueio de escrita do object storage usa o modo que permite exclusão só por um papel administrativo específico. Toda exclusão antes do prazo exige pedido do titular ou ordem judicial, aprovação de duas pessoas e registro na trilha de auditoria. Depois da exclusão, fica guardado só o id do registro, o hash do manifesto e o motivo, sem conteúdo nem dados pessoais. O mesmo modo e o mesmo processo valem para a cópia externa das evidências (ADR-006). O encerramento da conta conta como pedido do titular.
+7. **Direitos do titular na plataforma.** O usuário pode ver e baixar seus dados cadastrais, corrigir cadastro e faturamento, e pedir o encerramento da conta. No encerramento, o sistema avisa que as evidências serão excluídas em 30 dias e oferece o download dos zips nesse período. Como o manifesto é assinado (ADR-002), o cliente continua podendo comprovar a integridade dos arquivos baixados sem depender do Veridit.
 8. **Pedidos de terceiros** (pessoas que aparecem em evidências) são recebidos por um canal do encarregado de dados e avaliados caso a caso, já que a evidência pode ser necessária para o exercício de direitos do cliente.
 9. **Governança.** Nomear um encarregado de dados, publicar a política de privacidade e manter um plano de resposta a incidentes, com comunicação à ANPD e aos titulares quando necessário.
 
@@ -84,7 +88,7 @@ O ponto central desta ADR é resolver o conflito entre a imutabilidade das evid�
 |---|---|
 | Conformidade legal e redução de risco de sanções da ANPD | **Complexidade:** retenção por tipo de dado, expurgo controlado e direitos do titular exigem fluxos e telas próprios |
 | Custo de armazenamento limitado pelo prazo de retenção | **Valor do produto:** depois do prazo, a prova deixa de existir no Veridit, e o cliente precisa guardar o zip ou renovar a retenção |
-| Exposição menor de dados em caso de vazamento | **Desempenho e operação:** criptografia na aplicação impede buscas diretas por CPF e exige gestão de chaves |
+| Exposição menor de dados em caso de vazamento | **Desempenho e operação:** criptografia na aplicação impede buscas por parte do CPF (a busca exata usa o HMAC) e exige gestão de chaves |
 | Conflito entre imutabilidade e exclusão resolvido de forma explícita | **Processo humano:** exclusões antecipadas dependem de aprovação dupla e de um encarregado de dados |
 
 ## Consequências
