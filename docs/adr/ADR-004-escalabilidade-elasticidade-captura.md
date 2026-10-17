@@ -3,8 +3,11 @@
 - **Status:** Aceito
 - **Data:** 13/10/2026
 - **Decisores:** Equipe do projeto
-- **Apoio de IA:** Rascunho elaborado com apoio de IA em sala, sujeito à revisão e aprovação da equipe
+- **Apoio de IA:** Elaborado com apoio de IA em sala; revisado e aprovado pela equipe
 - **Revisão 1 (17/10/2026):** Título alterado de "Escalabilidade e elasticidade" para "Escalabilidade da captura" (a escala automática fica como evolução), separação entre fila para capturas de tela e alocação de sessão para vídeo, isolamento de cada captura e metas de verificação. Revisão feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 2 (17/10/2026):** Correções de coerência com as demais ADRs: número de instâncias alinhado às ADR-005 e ADR-011 e custo ajustável à demanda (a escala é manual na primeira versão). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 3 (17/10/2026):** Checklist de revisão (A1: captura interrompida não é refeita; A6: pool de containers limpos de uso único; D1: cabeçalho). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 4 (17/10/2026):** Coerência com as demais ADRs: "workers que escalam sozinhos" trocado por "de forma independente", para não sugerir escala automática, que fica como evolução (item 4). Feita com apoio de IA fora de sala.
 
 ## Contexto
 
@@ -36,7 +39,7 @@ Adotar **Escalabilidade da captura** como característica arquitetural prioritá
 4. **Escala horizontal** pelo número de workers, aumentado ou reduzido manualmente com Docker Compose na primeira versão. A **elasticidade** (escala automática) fica como evolução, num orquestrador, usando como gatilho o tamanho da fila de tela e a ocupação do pool de vídeo.
 5. **Envio direto ao object storage** (MinIO ou compatível com S3) a partir do worker, sem passar os arquivos pela API nem pelo banco.
 6. **Limites operacionais:** timeout de carregamento de página, duração máxima do vídeo e tamanho máximo de arquivo, para que uma captura não monopolize um worker.
-7. **Vídeo de navegação por alocação de sessão, não por fila.** Como o usuário navega ao vivo (ADR-002), a captura de vídeo reserva um navegador livre num pool de workers de vídeo, com limite de sessões simultâneas. Sem navegador livre, o usuário vê a posição de espera ou é convidado a tentar depois, em vez de entrar numa fila longa. A sessão fica presa ao worker durante a gravação, e o worker só é desligado depois de concluir ou cancelar as sessões em andamento.
+7. **Vídeo de navegação por alocação de sessão, não por fila.** Como o usuário navega ao vivo (ADR-002), a captura de vídeo reserva um navegador num pool de workers de vídeo, com limite de sessões simultâneas. O pool guarda containers limpos já iniciados; cada um é usado numa única sessão e descartado em seguida (item 3), o que também reduz o tempo de início. Sem navegador livre, o usuário vê a posição de espera ou é convidado a tentar depois, em vez de entrar numa fila longa. A sessão fica presa ao worker durante a gravação, e o worker só é desligado depois de concluir ou cancelar as sessões em andamento.
 8. **Relatório e zip** (REQ14, REQ15) gerados por workers assíncronos do Serviço de Registros e Relatórios, que escalam do mesmo modo.
 
 ## Metas de verificação
@@ -64,16 +67,16 @@ Adotar **Escalabilidade da captura** como característica arquitetural prioritá
 
 A escalabilidade da captura entra no top 4 porque é o **principal fator de custo e o principal gargalo** do sistema. Ela também é a razão técnica mais forte para separar o sistema em serviços. Sem ela, um monólito modular bastaria.
 
-Ao isolar a captura em workers que escalam sozinhos, o restante do sistema fica protegido de picos de carga, o que também melhora a disponibilidade. E o custo de infraestrutura passa a acompanhar o uso real.
+Ao isolar a captura em workers que escalam de forma independente dos demais serviços, o restante do sistema fica protegido de picos de carga, o que também melhora a disponibilidade. E o custo de infraestrutura pode ser ajustado ao uso: manualmente na primeira versão e automaticamente quando a escala automática for adotada.
 
-A arquitetura service-based permite essa decisão sem a complexidade dos microsserviços. Só o Serviço de Captura e os workers de relatório precisam escalar. Os outros serviços podem rodar com uma única instância na primeira versão.
+A arquitetura service-based permite essa decisão sem a complexidade dos microsserviços. Só o Serviço de Captura e os workers de relatório precisam escalar com a carga. Os outros serviços rodam com uma instância na primeira versão, exceto o Gateway e a Identidade, que têm duas por disponibilidade (ADR-005).
 
 ## Trade-offs
 
 | Ganha-se | Perde-se / custo |
 |---|---|
 | Picos de captura não afetam login, compras e consultas | **Complexidade:** fila, workers, object storage e acompanhamento de status adicionam componentes e pontos de falha |
-| Custo de infraestrutura proporcional à demanda | **Latência em pico:** com fila cheia, a captura entra em espera e o usuário aguarda para começar, o que exige mostrar a posição na fila ou o status |
+| Custo de infraestrutura ajustável à demanda (manualmente na primeira versão) | **Latência em pico:** com fila cheia, a captura entra em espera e o usuário aguarda para começar, o que exige mostrar a posição na fila ou o status |
 | Capacidade de crescer para clientes empresariais (D1) adicionando workers | **Elasticidade limitada no vídeo:** sessões interativas são presas a um worker, que não pode ser desligado no meio, o que torna a redução de escala mais lenta e cara |
 | Falha de um worker afeta só as capturas daquele worker | **Novos gargalos:** banco compartilhado, broker e object storage podem virar o limite quando houver muitos workers |
 | Limites operacionais protegem contra sites lentos ou abusivos | **Usabilidade:** a duração máxima do vídeo e os timeouts restringem o que o usuário consegue registrar |
@@ -83,11 +86,11 @@ A arquitetura service-based permite essa decisão sem a complexidade dos micross
 
 **Positivas**
 - O sistema absorve variações de demanda sem mudar a arquitetura.
-- A fila também dá tolerância a falhas: trabalhos de um worker que caiu podem ser reenfileirados (com estorno de crédito se a captura não puder ser retomada, conforme ADR-003).
+- A fila também dá tolerância a falhas: a queda de um worker afeta só as capturas em andamento nele, que viram `FALHOU` com devolução do crédito (ADR-003, ADR-005). Capturas interrompidas não são refeitas automaticamente, porque uma nova tentativa seria outra captura, em outro momento.
 - Relatório e zip seguem o mesmo padrão assíncrono, deixando o modelo de processamento uniforme.
 
 **Negativas / riscos**
 - A escala automática (elasticidade) fica fora da primeira versão e precisará de um orquestrador e de uma nova ADR.
-- Criar um container ou navegador novo por captura aumenta o tempo de início de cada captura, o que precisa ser medido.
+- Criar um container ou navegador novo por captura aumenta o tempo de início de cada captura, o que precisa ser medido. No vídeo, o pool de containers pré-iniciados (item 7) reduz esse efeito.
 - Os valores dos limites (duração do vídeo, timeouts, capturas simultâneas por worker) não estão nos requisitos e precisam ser definidos e validados.
 - O uso de recursos do Chromium em produção precisa ser medido cedo, para dimensionar os workers e estimar o custo por registro.
