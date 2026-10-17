@@ -27,8 +27,9 @@ As quatro características foram escolhidas entre as top 10 do [README](../../RE
 ### Características que ficaram fora do top 4
 
 - **Disponibilidade e tolerância a falhas:** atendidas em boa parte como efeito das ADR-003 e ADR-004 (isolamento de serviços, fila, novas tentativas e estorno).
+- **Durabilidade e recuperação das evidências:** depende de backup, replicação e testes de restauração, decisões de infraestrutura que não mudam a divisão em serviços. Complementa a ADR-002 (integridade garante que a prova não mudou; durabilidade garante que ela não se perde).
 - **Conformidade legal (LGPD):** tratada dentro das ADR-001 e ADR-002 e dos trade-offs entre elas.
-- **Interoperabilidade, extensibilidade, desempenho e manutenibilidade:** importantes, mas resolvidas com padrões de projeto (adaptadores, assincronismo, divisão por domínio) sem definir sozinhas a estrutura da arquitetura.
+- **Interoperabilidade, extensibilidade e manutenibilidade e desempenho:** importantes, mas resolvidas com padrões de projeto (adaptadores, assincronismo, divisão por domínio) sem definir sozinhas a estrutura da arquitetura.
 
 ### Tensões entre as características escolhidas
 
