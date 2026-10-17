@@ -1,13 +1,14 @@
 # ADR-003: Confiabilidade transacional de pagamentos e créditos como característica arquitetural prioritária
 
-- **Status:** Proposto
+- **Status:** Aceito
 - **Data:** 13/10/2026
 - **Decisores:** Equipe do projeto
 - **Apoio de IA:** Rascunho elaborado com apoio de IA em sala, sujeito à revisão e aprovação da equipe
+- **Revisão 1 (17/10/2026):** Pix por meio de provedor de serviços de pagamento, detalhes da reserva de créditos (chamada síncrona, idempotência e expiração), regra para estorno de pagamento com créditos já usados e metas de verificação. Revisão feita com apoio de IA fora de sala, com autorização excepcional do professor.
 
 ## Contexto
 
-O modelo de negócio do Veridit é por **créditos pré-pagos**. O usuário escolhe um pacote (básico, médio ou premium), informa os dados de faturamento e paga pelo Mercado Pago ou por Pix gerado na própria plataforma. Depois, consome créditos ao fazer registros de conteúdo.
+O modelo de negócio do Veridit é por **créditos pré-pagos**. O usuário escolhe um pacote (básico, médio ou premium), informa os dados de faturamento e paga pelo Mercado Pago ou por Pix gerado na própria plataforma. O Veridit não gera Pix sozinho: a cobrança Pix é criada por um provedor de serviços de pagamento, que na primeira versão é o próprio Mercado Pago (ADR-008). Depois, consome créditos ao fazer registros de conteúdo.
 
 O pagamento é **assíncrono e externo**. A confirmação chega por notificação do provedor (webhook), que pode atrasar, chegar duplicada, fora de ordem ou nem chegar. O Pix pode expirar sem ser pago. Do outro lado, a captura pode falhar no meio por timeout, site fora do ar ou queda do worker.
 
@@ -34,8 +35,22 @@ Adotar **Confiabilidade transacional de pagamentos e créditos** como caracterí
 4. **Validação da origem do webhook** (assinatura ou segredo) e **consulta ativa ao provedor** antes de aprovar. O sistema nunca confia apenas no conteúdo da notificação nem no redirecionamento do navegador.
 5. **Reconciliação periódica.** Uma tarefa agendada consulta no provedor os pagamentos `PENDENTE` antigos, para recuperar webhooks perdidos e marcar Pix expirados.
 6. **Reserva → consumo → estorno.** Ao iniciar o registro (REQ08), o crédito é reservado. Ao concluir (REQ09, REQ11), a reserva vira consumo. Se a captura falhar, a reserva é desfeita e o crédito volta.
+   - A reserva é uma chamada síncrona do Serviço de Captura ao de Créditos, feita antes de o trabalho entrar na fila. Se Créditos estiver fora do ar, a captura não começa e o usuário recebe uma mensagem clara (ADR-005).
+   - Reserva, consumo e devolução são idempotentes pelo id do registro: repetir a mesma operação não reserva nem devolve duas vezes.
+   - Reservas que não forem concluídas dentro do tempo máximo da captura são desfeitas automaticamente, para que a queda de um worker não prenda créditos (ADR-005).
 7. **Outbox transacional.** Os eventos `PagamentoConfirmado` e `CreditoEstornado` são gravados na mesma transação da mudança de estado e só depois publicados na fila. Isso garante o e-mail de confirmação (REQ07) sem perder nem duplicar eventos.
 8. **Preço congelado na compra.** O valor e a quantidade de créditos do pacote são copiados para o pedido no momento da compra, para que mudanças futuras nos pacotes (D2) não alterem compras já feitas.
+9. **Estorno pelo provedor com créditos já usados.** Se um pagamento aprovado for estornado ou contestado no provedor, os créditos daquela compra são debitados no livro-razão. Se já tiverem sido usados, o saldo fica negativo e novas capturas ficam bloqueadas até a regularização. Os registros já feitos continuam acessíveis ao usuário.
+
+## Metas de verificação
+
+| Item | Meta inicial |
+|---|---|
+| Webhook repetido (mesmo id de pagamento ou txid) | Nenhum crédito em dobro em teste com 1.000 repetições |
+| Webhook perdido | Pagamento aprovado reconhecido pela reconciliação em até 30 minutos |
+| Captura que falha | Crédito devolvido em 100% dos casos |
+| Reserva presa por queda de worker | Desfeita automaticamente após o tempo máximo da captura |
+| Saldo calculado pelo livro-razão | Igual ao saldo em cache em 100% das verificações diárias |
 
 ## Alternativas consideradas
 
@@ -75,3 +90,4 @@ A arquitetura service-based ajuda nessa decisão. Os dados financeiros ficam em 
 - A equipe precisa dominar idempotência, outbox e máquina de estados, padrões menos triviais que um CRUD.
 - A tarefa de reconciliação vira componente crítico e precisa ser monitorada.
 - A regra de consumo (créditos por registro, tela ou vídeo) precisa ser validada com o cliente, porque o documento de requisitos não a define.
+- A regra de saldo negativo após estorno também é uma proposta da equipe e precisa ser validada com o cliente.
