@@ -4,6 +4,8 @@ Esta pasta guarda as ADRs do Veridit. Cada ADR segue o modelo padronizado da dis
 
 Conforme as regras do trabalho, ADRs só são criadas, editadas, revisadas ou têm o status alterado **em sala**, durante as sessões supervisionadas. Cada alteração é registrada em commit (`docs(adr): ...`).
 
+Exceção: as ADR-005 a ADR-011 e as revisões das ADR-001 a ADR-011 feitas em 17/10/2026 foram elaboradas fora de sala, com apoio de IA, mediante autorização excepcional do professor. Cada ADR registra isso no cabeçalho.
+
 ## Índice
 
 | ADR | Título | Status |
@@ -35,13 +37,13 @@ As quatro características foram escolhidas entre as top 10 do [README](../../RE
 
 Cada uma tem ADR própria, que registra as táticas adotadas e as metas de verificação, mas nenhuma define sozinha a estrutura da arquitetura:
 
-- **Disponibilidade e tolerância a falhas ([ADR-005](ADR-005-disponibilidade-tolerancia-falhas.md)):** em boa parte efeito das ADR-003 e ADR-004 (isolamento, fila, estorno). A ADR-005 completa com Gateway e Identidade replicados, disjuntores, degradação controlada e expiração de reservas presas.
+- **Disponibilidade e tolerância a falhas ([ADR-005](ADR-005-disponibilidade-tolerancia-falhas.md)):** em boa parte efeito das ADR-003 e ADR-004 (isolamento, fila, devolução de créditos). A ADR-005 completa com Gateway e Identidade replicados, disjuntores, degradação controlada e expiração de reservas presas.
 - **Durabilidade e recuperação das evidências ([ADR-006](ADR-006-durabilidade-recuperacao-evidencias.md)):** backup, replicação e testes de restauração, decisões de infraestrutura que não mudam a divisão em serviços. Complementa a ADR-002: integridade garante que a prova não mudou; durabilidade garante que ela não se perde.
 - **Conformidade legal (LGPD) ([ADR-007](ADR-007-conformidade-lgpd.md)):** parte atendida pela ADR-001. A ADR-007 define bases legais, retenção e o expurgo controlado que resolve o conflito com a imutabilidade da ADR-002.
 - **Interoperabilidade ([ADR-008](ADR-008-interoperabilidade.md)), extensibilidade e manutenibilidade ([ADR-009](ADR-009-extensibilidade-manutenibilidade.md)) e desempenho ([ADR-010](ADR-010-desempenho.md)):** resolvidas com padrões de projeto (adaptadores, perfis, estratégias, camadas, assincronismo, reaproveitamento de arquivos).
 
 ### Tensões entre as características escolhidas
 
-- **Segurança × Integridade (LGPD):** a imutabilidade das evidências (ADR-002) se choca com o direito de exclusão dos dados pessoais, o que exige uma política de retenção definida.
+- **Segurança × Integridade (LGPD):** a imutabilidade das evidências (ADR-002) se choca com o direito de exclusão dos dados pessoais. A ADR-007 resolve com retenção por prazo e expurgo controlado.
 - **Integridade × Escalabilidade:** calcular hash e gravar de forma imutável aumenta o custo por captura e o tempo de processamento nos workers.
-- **Confiabilidade × Escalabilidade:** a reserva e o estorno de créditos ligam o Serviço de Captura ao Serviço de Créditos. Uma falha em escala precisa devolver o crédito de forma correta (outbox e idempotência).
+- **Confiabilidade × Escalabilidade:** a reserva e a devolução de créditos ligam o Serviço de Captura ao Serviço de Créditos. Uma falha em escala precisa devolver o crédito de forma correta (outbox e idempotência).
