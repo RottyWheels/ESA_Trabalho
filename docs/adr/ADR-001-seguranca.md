@@ -3,8 +3,11 @@
 - **Status:** Aceito
 - **Data:** 13/10/2026
 - **Decisores:** Equipe do projeto
-- **Apoio de IA:** Rascunho elaborado com apoio de IA em sala, sujeito à revisão e aprovação da equipe
+- **Apoio de IA:** Elaborado com apoio de IA em sala; revisado e aprovado pela equipe
 - **Revisão 1 (17/10/2026):** Validação do token também nos serviços, rotas públicas explícitas (incluindo webhooks), prazo do token de acesso, confirmação de e-mail, isolamento de rede dos workers de captura e metas de verificação. Revisão feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 2 (17/10/2026):** Correções de coerência com as demais ADRs: comunicação dos workers só por eventos, entrada do vídeo pelo proxy do Gateway, links temporários de download, rotas públicas completas, disponibilidade do Gateway e da Identidade (ADR-005) e referência à ADR-007. Feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 3 (17/10/2026):** Checklist de revisão (B2: autenticação entre serviços; D1: cabeçalho). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 4 (17/10/2026):** Coerência com as demais ADRs: o worker pede o início da captura de tela à API de Captura pelo broker, sem ler o banco (item 13). Feita com apoio de IA fora de sala.
 
 ## Contexto
 
@@ -29,7 +32,7 @@ Adotar **Segurança** como característica arquitetural prioritária (1ª do top
 
 1. **Autenticação centralizada** no Serviço de Identidade. O acesso usa um token de curta duração (JWT) e um token de renovação (*refresh token*) que pode ser revogado.
 2. **Validação do token no API Gateway e nos serviços.** O Gateway rejeita requisições sem token válido, e cada serviço também valida o token que recebe (defesa em profundidade). Assim, acessar a rede interna não basta para chegar aos serviços. A validação usa a chave pública do Serviço de Identidade, sem chamá-lo a cada requisição (ADR-005).
-3. **Rotas públicas explícitas.** As únicas rotas sem token de usuário são cadastro, login, recuperação de senha e os webhooks dos provedores de pagamento. Os webhooks são protegidos pela validação da assinatura do provedor e pela consulta ativa ao provedor antes de aprovar qualquer pagamento (ADR-003).
+3. **Rotas públicas explícitas.** As únicas rotas sem token de acesso são cadastro, confirmação de e-mail, login, renovação do token (que exige o token de renovação), recuperação de senha, a chave pública de verificação dos manifestos (ADR-002) e os webhooks dos provedores de pagamento. Os webhooks são protegidos pela validação da assinatura do provedor e pela consulta ativa ao provedor antes de aprovar qualquer pagamento (ADR-003).
 4. **Autorização por perfil e por dono do recurso.** Todo acesso a registros, relatórios e arquivos confere se o recurso pertence ao usuário autenticado.
 5. **Senhas guardadas com hash forte e lento** (Argon2 ou bcrypt), nunca em texto puro.
 6. **Recuperação de senha** com token de uso único, prazo de validade curto e envio só para o e-mail cadastrado.
@@ -42,15 +45,18 @@ Adotar **Segurança** como característica arquitetural prioritária (1ª do top
 13. **Isolamento de rede dos workers de captura.** O worker abre URLs informadas pelo usuário, que podem apontar para a rede interna (`http://localhost`, `http://minio:9000`) ou para sites maliciosos. Por isso:
     - os workers ficam numa rede separada, com saída só para a internet;
     - endereços privados, de loopback e de metadados de nuvem são bloqueados, inclusive depois de redirecionamentos e da resolução de DNS;
-    - do ambiente interno, o worker só alcança o broker e o object storage, com credenciais de permissão mínima;
+    - do ambiente interno, o worker só alcança o broker e o object storage, com credenciais de permissão mínima. Ele não acessa o banco, o Serviço de Créditos nem o cofre de chaves: comunica o resultado por eventos, e a API de Captura atualiza o estado do registro, converte a reserva de crédito e pede a assinatura do manifesto (ADR-002, ADR-003). Até para começar uma captura de tela o worker não lê o banco: pede à API de Captura, por mensagem de pedido e resposta no broker, que passe o registro de `NA_FILA` para `EM_ANDAMENTO`, e só começa se ela autorizar (ADR-002);
+    - a única conexão de entrada nos workers é a transmissão do vídeo de navegação, que chega pelo proxy de sessão do Gateway, autenticada com o token do usuário (ADR-002);
     - cada captura roda num navegador novo, em container sem privilégios, descartado ao final (ADR-004).
+14. **Downloads por link temporário.** O object storage é exposto à internet apenas para links assinados de download (ADR-010), gerados pela API depois de conferir o dono do registro e válidos por poucos minutos. O restante do storage fica restrito à rede interna.
+15. **Autenticação entre serviços.** Chamadas internas sem usuário (API de Captura → Créditos, Registros e Relatórios → Identidade, API de Captura → cofre) usam uma credencial própria de cada serviço, guardada no cofre de segredos (item 12), com permissão só para as rotas internas de que ele precisa. Quando a chamada é feita em nome de um usuário, o token dele também é repassado e validado.
 
 ## Metas de verificação
 
 | Item | Meta inicial |
 |---|---|
 | Endpoints com teste de autorização por dono do recurso | 100% |
-| Requisições a serviços internos sem token válido | Todas rejeitadas, inclusive vindas da rede interna |
+| Requisições a serviços internos sem token de usuário ou credencial de serviço válidos | Todas rejeitadas, inclusive vindas da rede interna |
 | Webhooks com assinatura inválida | Todos rejeitados e registrados |
 | Captura de URL de rede interna ou privada | Bloqueada (teste automatizado com localhost, IPs privados e redirecionamentos) |
 | Validade do token de acesso | No máximo 15 minutos |
@@ -69,7 +75,7 @@ Adotar **Segurança** como característica arquitetural prioritária (1ª do top
 
 Segurança entra no top 4 por três motivos. É o único atributo exigido explicitamente. O sistema concentra dados pessoais, financeiros e jurídicos. E uma falha de segurança comprometeria a característica que dá valor ao produto: a evidência só tem valor jurídico se for comprovado que ninguém além do dono teve acesso a ela ou a alterou (ver ADR-002).
 
-A arquitetura service-based favorece essa decisão. O Serviço de Identidade concentra a lógica de autenticação, o Gateway funciona como barreira de entrada única e o schema de pagamentos fica fisicamente isolado dos demais.
+A arquitetura service-based favorece essa decisão. O Serviço de Identidade concentra a lógica de autenticação, o Gateway funciona como barreira de entrada única para as APIs e para a transmissão do vídeo (a única exceção são os links temporários de download, autorizados pela API) e o schema de pagamentos fica fisicamente isolado dos demais.
 
 ## Trade-offs
 
@@ -78,7 +84,7 @@ A arquitetura service-based favorece essa decisão. O Serviço de Identidade con
 | Proteção de dados pessoais, financeiros e das evidências | **Desempenho:** hash de senha lento por definição, validação de token a cada requisição e custo de criptografia |
 | Conformidade com o requisito de segurança e com a LGPD | **Usabilidade:** sessões que expiram, nova autenticação, regras de senha e limite de tentativas podem incomodar o usuário |
 | Controle de acesso igual em todos os serviços | **Complexidade:** JWT não pode ser revogado nativamente, então o logout (REQ04) exige token de renovação revogável ou lista de bloqueio |
-| Credibilidade do produto como plataforma de provas | **Ponto único de falha:** se o Serviço de Identidade ou o Gateway caírem, ninguém acessa o sistema, o que exige atenção à disponibilidade deles |
+| Credibilidade do produto como plataforma de provas | **Componentes críticos:** o Gateway e o Serviço de Identidade concentram o acesso. A ADR-005 reduz o risco com duas instâncias de cada e validação local do token: se a Identidade cair, quem já está logado continua usando o sistema |
 | | **Custo de desenvolvimento e testes:** testes de autorização em todos os endpoints e gestão de segredos e certificados |
 
 ## Consequências
@@ -90,6 +96,6 @@ A arquitetura service-based favorece essa decisão. O Serviço de Identidade con
 - Os workers de captura não servem de porta de entrada para a rede interna.
 
 **Negativas / riscos**
-- O Gateway e o Serviço de Identidade passam a ser componentes críticos para a disponibilidade.
+- O Gateway e o Serviço de Identidade passam a ser componentes críticos para a disponibilidade (mitigado pela ADR-005).
 - Toda nova rota precisa de testes de autorização por dono do recurso, ou há risco de acesso indevido a registros de outros usuários.
-- Será preciso definir a política de retenção e exclusão de dados (LGPD), que entra em tensão com a imutabilidade das evidências (ADR-002).
+- A política de retenção e exclusão de dados (LGPD) e seu conflito com a imutabilidade das evidências (ADR-002) são tratados na ADR-007.
