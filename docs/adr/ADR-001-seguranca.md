@@ -1,9 +1,10 @@
 # ADR-001: Segurança como característica arquitetural prioritária
 
-- **Status:** Proposto
+- **Status:** Aceito
 - **Data:** 13/10/2026
 - **Decisores:** Equipe do projeto
 - **Apoio de IA:** Rascunho elaborado com apoio de IA em sala, sujeito à revisão e aprovação da equipe
+- **Revisão 1 (17/10/2026):** Validação do token também nos serviços, rotas públicas explícitas (incluindo webhooks), prazo do token de acesso, confirmação de e-mail, isolamento de rede dos workers de captura e metas de verificação. Revisão feita com apoio de IA fora de sala, com autorização excepcional do professor.
 
 ## Contexto
 
@@ -27,15 +28,33 @@ Há dois perfis de usuário na primeira versão (advogado e usuário comum) e um
 Adotar **Segurança** como característica arquitetural prioritária (1ª do top 4), implementada pelos seguintes mecanismos:
 
 1. **Autenticação centralizada** no Serviço de Identidade. O acesso usa um token de curta duração (JWT) e um token de renovação (*refresh token*) que pode ser revogado.
-2. **Validação do token no API Gateway**, para que nenhum serviço interno receba requisição não autenticada.
-3. **Autorização por perfil e por dono do recurso.** Todo acesso a registros, relatórios e arquivos confere se o recurso pertence ao usuário autenticado.
-4. **Senhas guardadas com hash forte e lento** (Argon2 ou bcrypt), nunca em texto puro.
-5. **Recuperação de senha** com token de uso único, prazo de validade curto e envio só para o e-mail cadastrado.
-6. **Logout efetivo** (REQ04): o token de renovação é revogado e a sessão é encerrada no servidor.
-7. **Proteção dos dados:** TLS em toda comunicação externa e criptografia em repouso dos dados sensíveis e das evidências.
-8. **Isolamento do schema de pagamentos**, com credenciais de banco próprias, acessíveis só pelo Serviço de Créditos e Pagamentos.
-9. **Limite de tentativas** de login e de recuperação de senha, contra força bruta.
-10. **Segredos fora do código** (variáveis de ambiente ou cofre de segredos).
+2. **Validação do token no API Gateway e nos serviços.** O Gateway rejeita requisições sem token válido, e cada serviço também valida o token que recebe (defesa em profundidade). Assim, acessar a rede interna não basta para chegar aos serviços. A validação usa a chave pública do Serviço de Identidade, sem chamá-lo a cada requisição (ADR-005).
+3. **Rotas públicas explícitas.** As únicas rotas sem token de usuário são cadastro, login, recuperação de senha e os webhooks dos provedores de pagamento. Os webhooks são protegidos pela validação da assinatura do provedor e pela consulta ativa ao provedor antes de aprovar qualquer pagamento (ADR-003).
+4. **Autorização por perfil e por dono do recurso.** Todo acesso a registros, relatórios e arquivos confere se o recurso pertence ao usuário autenticado.
+5. **Senhas guardadas com hash forte e lento** (Argon2 ou bcrypt), nunca em texto puro.
+6. **Recuperação de senha** com token de uso único, prazo de validade curto e envio só para o e-mail cadastrado.
+7. **Logout efetivo** (REQ04): o token de renovação é revogado e a sessão é encerrada no servidor. O token de acesso tem validade de no máximo 15 minutos, então continua aceito só até expirar.
+8. **Confirmação do e-mail no cadastro** (REQ01), já que a recuperação de senha depende dele, e **validação do CPF** pelos dígitos verificadores.
+9. **Proteção dos dados:** TLS em toda comunicação externa e criptografia em repouso dos dados sensíveis e das evidências.
+10. **Isolamento do schema de pagamentos**, com credenciais de banco próprias, acessíveis só pelo Serviço de Créditos e Pagamentos.
+11. **Limite de tentativas** de login e de recuperação de senha, contra força bruta.
+12. **Segredos fora do código** (variáveis de ambiente ou cofre de segredos).
+13. **Isolamento de rede dos workers de captura.** O worker abre URLs informadas pelo usuário, que podem apontar para a rede interna (`http://localhost`, `http://minio:9000`) ou para sites maliciosos. Por isso:
+    - os workers ficam numa rede separada, com saída só para a internet;
+    - endereços privados, de loopback e de metadados de nuvem são bloqueados, inclusive depois de redirecionamentos e da resolução de DNS;
+    - do ambiente interno, o worker só alcança o broker e o object storage, com credenciais de permissão mínima;
+    - cada captura roda num navegador novo, em container sem privilégios, descartado ao final (ADR-004).
+
+## Metas de verificação
+
+| Item | Meta inicial |
+|---|---|
+| Endpoints com teste de autorização por dono do recurso | 100% |
+| Requisições a serviços internos sem token válido | Todas rejeitadas, inclusive vindas da rede interna |
+| Webhooks com assinatura inválida | Todos rejeitados e registrados |
+| Captura de URL de rede interna ou privada | Bloqueada (teste automatizado com localhost, IPs privados e redirecionamentos) |
+| Validade do token de acesso | No máximo 15 minutos |
+| Tentativas de login por conta | Bloqueio temporário após 5 falhas seguidas |
 
 ## Alternativas consideradas
 
@@ -43,7 +62,7 @@ Adotar **Segurança** como característica arquitetural prioritária (1ª do top
 |---|---|
 | Tratar segurança como requisito implícito, fora do top 4 | É o único atributo explícito no documento e o produto lida com dados pessoais, dinheiro e provas. Deixá-la em segundo plano contraria o requisito e a LGPD. |
 | Sessão com estado guardada em um único servidor | Exigiria sessão compartilhada entre os serviços ou afinidade de servidor, o que conflita com a implantação independente dos serviços. |
-| Autenticação implementada separadamente em cada serviço | Duplica lógica sensível e aumenta a chance de falhas inconsistentes. A validação centralizada no Gateway reduz a área de ataque. |
+| Login e emissão de tokens implementados em cada serviço | Duplica lógica sensível e aumenta a chance de falhas inconsistentes. A emissão fica centralizada na Identidade; os serviços apenas validam o token com uma biblioteca comum. |
 | Autenticação delegada a provedor externo (login social, Keycloak) | Viável no futuro. Na primeira versão aumenta dependências e configuração sem trazer ganho essencial, e o cadastro exige CPF e OAB (REQ01, D1). |
 
 ## Justificativa
@@ -68,6 +87,7 @@ A arquitetura service-based favorece essa decisão. O Serviço de Identidade con
 - Nenhum serviço interno fica exposto sem autenticação.
 - O isolamento dos dados de pagamento reduz o impacto de um eventual vazamento.
 - O modelo de perfis aceita o tipo empresa (D1) sem mudar o mecanismo de autenticação.
+- Os workers de captura não servem de porta de entrada para a rede interna.
 
 **Negativas / riscos**
 - O Gateway e o Serviço de Identidade passam a ser componentes críticos para a disponibilidade.
