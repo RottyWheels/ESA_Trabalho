@@ -3,7 +3,9 @@
 - **Status:** Aceito
 - **Data:** 17/10/2026
 - **Decisores:** Equipe do projeto
-- **Apoio de IA:** Rascunho elaborado com apoio de IA fora de sala, com autorização excepcional do professor, sujeito à revisão e aprovação da equipe
+- **Apoio de IA:** Elaborado com apoio de IA fora de sala, com autorização excepcional do professor; revisado e aprovado pela equipe
+- **Revisão 1 (17/10/2026):** Correções de coerência com as demais ADRs: bucket próprio para relatórios e zips, separado do bucket imutável das evidências, auditoria da geração do link e leitura da cópia mantida por Registros e Relatórios (ADR-009). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 2 (17/10/2026):** Checklist de revisão (B7: relatórios e zips fora da cópia externa; B9: relatório após correção de cadastro; B10: e-mail só para a captura; D1: cabeçalho). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
 
 ## Contexto
 
@@ -28,10 +30,10 @@ As operações pesadas já foram tiradas do caminho das requisições pela ADR-0
 
 Tratar **desempenho** com as seguintes táticas:
 
-1. **Separar operações rápidas e lentas.** Toda operação que pode passar de alguns segundos (captura, relatório, zip) é assíncrona: a API responde na hora com o id e o status, e o resultado é avisado por e-mail (REQ10, REQ11) e pela tela de acompanhamento.
-2. **Relatório e zip gerados uma vez e reaproveitados.** Como as evidências são imutáveis (ADR-002), o relatório e o zip de um registro concluído nunca mudam. Eles são gerados uma vez, guardados no object storage e reaproveitados nos downloads seguintes. A geração pode começar automaticamente quando o registro é concluído.
-3. **Download direto do object storage.** O arquivo é baixado por um link temporário e assinado do próprio storage, sem passar pela API nem pelo Gateway. A API só confere a permissão do usuário (ADR-001) e gera o link.
-4. **Listagem paginada e indexada.** A listagem (REQ12) é paginada, ordenada pela data de início, com índice por usuário e data. A tela de detalhes (REQ13) lê só os metadados do banco, sem acessar os arquivos.
+1. **Separar operações rápidas e lentas.** Toda operação que pode passar de alguns segundos (captura, relatório, zip) é assíncrona: a API responde na hora com o id e o status, e o resultado aparece na tela de acompanhamento. No caso da captura, também é avisado por e-mail (REQ10, REQ11).
+2. **Relatório e zip gerados uma vez e reaproveitados.** Como as evidências são imutáveis (ADR-002), o relatório e o zip de um registro concluído não mudam. A única exceção é a correção do cadastro (ADR-007): o relatório mostra os dados do usuário na data em que foi gerado, e uma correção faz um novo relatório ser gerado. Eles são gerados uma vez, guardados num bucket próprio de arquivos derivados, separado do bucket imutável das evidências, e reaproveitados nos downloads seguintes. Como não são a evidência em si, podem ser apagados e gerados de novo se houver erro. A geração pode começar automaticamente quando o registro é concluído.
+3. **Download direto do object storage.** O arquivo é baixado por um link temporário e assinado do próprio storage, sem passar pela API nem pelo Gateway. A API só confere a permissão do usuário (ADR-001) e gera o link, que vale poucos minutos. A geração do link é registrada na trilha de auditoria (ADR-002).
+4. **Listagem paginada e indexada.** A listagem (REQ12) é paginada, ordenada pela data de início, com índice por usuário e data. A tela de detalhes (REQ13) lê só os metadados do banco, sem acessar os arquivos. As duas leem a cópia de leitura mantida pelo Serviço de Registros e Relatórios (ADR-009).
 5. **Token validado no Gateway sem chamada à Identidade** (ADR-005). Nenhuma requisição comum paga o custo de uma chamada extra para autenticação.
 6. **Hash de senha calibrado.** Os parâmetros do Argon2 são ajustados para cerca de 250 a 500 ms por verificação no servidor de produção: lento o bastante para dificultar ataques, sem tornar o login lento.
 7. **Pool de conexões** com o banco em todos os serviços, e limite de conexões por serviço para que um não esgote o banco dos outros.
@@ -70,7 +72,7 @@ As táticas aproveitam características do próprio domínio. Como a evidência 
 
 | Ganha-se | Perde-se / custo |
 |---|---|
-| Operações frequentes rápidas mesmo com o custo de segurança e integridade | **Armazenamento:** relatórios e zips guardados ocupam espaço extra, inclusive nas cópias (ADR-006) |
+| Operações frequentes rápidas mesmo com o custo de segurança e integridade | **Armazenamento:** relatórios e zips guardados ocupam espaço extra. Eles não entram na cópia externa (ADR-006), porque podem ser gerados de novo |
 | API e Gateway livres do tráfego de arquivos grandes | **Segurança:** links temporários de download podem ser repassados enquanto valem, então o prazo precisa ser curto (minutos) |
 | Metas objetivas para testar | **Esforço:** testes de carga precisam ser preparados e repetidos a cada entrega |
 | Sem componentes de cache extras na primeira versão | **Experiência:** o status por consulta periódica tem alguns segundos de atraso |
