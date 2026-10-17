@@ -3,8 +3,11 @@
 - **Status:** Aceito
 - **Data:** 13/10/2026
 - **Decisores:** Equipe do projeto
-- **Apoio de IA:** Rascunho elaborado com apoio de IA em sala, sujeito à revisão e aprovação da equipe
+- **Apoio de IA:** Elaborado com apoio de IA em sala; revisado e aprovado pela equipe
 - **Revisão 1 (17/10/2026):** Assinatura digital do manifesto, hash do manifesto no e-mail de conclusão, metadados técnicos da captura, navegação remota no vídeo, novos estados do registro e metas de verificação. Revisão feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 2 (17/10/2026):** Correções de coerência com as demais ADRs: transmissão do vídeo pelo proxy do Gateway, assinatura pedida pela API de Captura (o worker não acessa a chave), exclusão só pelo expurgo da ADR-007, auditoria da geração do link de download e referências à ADR-007. Feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 3 (17/10/2026):** Checklist de revisão (A1: captura interrompida não é refeita; A3: eventos `CapturaExecutada` e `CapturaConcluida`; A5: `NA_FILA` só na captura de tela; D1: cabeçalho). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
+- **Revisão 4 (17/10/2026):** Coerência com as demais ADRs: só a API de Captura muda o estado do registro; início da captura de tela por pedido e resposta no broker e evento `CapturaComErro` para falhas com o worker vivo (item 12). Feita com apoio de IA fora de sala.
 
 ## Contexto
 
@@ -32,17 +35,17 @@ O Apêndice A pede que o relatório traga: id do relatório e do registro gerado
 Adotar **Integridade e auditabilidade das evidências** como característica arquitetural prioritária (2ª do top 4), implementada pelos seguintes mecanismos:
 
 1. **Captura feita no servidor**, em workers controlados pelo Veridit com navegador sem interface. O conteúdo nunca vem do dispositivo do usuário. Cada captura usa um navegador novo, sem cookies nem dados de capturas anteriores.
-2. **Navegação remota no vídeo de navegação** (REQ08). O usuário navega no navegador que roda no worker: a tela é transmitida para o navegador dele e seus cliques e teclas são enviados ao worker (transmissão de tela do Chromium por WebSocket). O que é gravado sai do worker; o dispositivo do usuário só exibe a tela e envia comandos. As ações do usuário são registradas na trilha de auditoria.
+2. **Navegação remota no vídeo de navegação** (REQ08). O usuário navega no navegador que roda no worker: a tela é transmitida para o navegador dele e seus cliques e teclas são enviados ao worker (transmissão de tela do Chromium por WebSocket). O que é gravado sai do worker; o dispositivo do usuário só exibe a tela e envia comandos. As ações do usuário são registradas na trilha de auditoria. A transmissão passa por um proxy de sessão no Gateway, autenticado com o token do usuário; o worker não recebe conexões diretas da internet (ADR-001).
 3. **Hash SHA-256 de cada arquivo** (imagem e vídeo), calculado pelo worker logo após a captura, antes de qualquer armazenamento.
 4. **Manifesto do registro**: documento com id do registro, usuário, URL, data/hora de início e fim, lista de arquivos com nome, tamanho e hash. O hash do próprio manifesto também é registrado.
 5. **Metadados técnicos da captura no manifesto:** endereço IP do servidor do site, resolução de DNS, certificado TLS do site, cabeçalhos HTTP da resposta, código HTML da página capturada e versão do navegador. Esses dados ajudam a demonstrar que o conteúdo veio de fato daquele site.
-6. **Assinatura digital do manifesto** com a chave privada do Veridit, guardada num cofre fora dos workers e do banco. Sem a chave, nem quem tem acesso ao banco e ao storage consegue trocar arquivos e hashes juntos e gerar um manifesto válido. Qualquer pessoa pode conferir a assinatura com a chave pública publicada pelo Veridit.
+6. **Assinatura digital do manifesto** com a chave privada do Veridit, guardada num cofre fora dos workers e do banco. Quem pede a assinatura é a API de Captura, ao receber o evento `CapturaExecutada` do worker e depois de conferir os hashes do manifesto com os checksums que o object storage registrou na gravação. O worker nunca tem acesso à chave, para que um worker comprometido por um site malicioso não consiga assinar manifestos falsos. Sem a chave, nem quem tem acesso ao banco e ao storage consegue trocar arquivos e hashes juntos e gerar um manifesto válido. Qualquer pessoa pode conferir a assinatura com a chave pública publicada pelo Veridit. Só depois de assinar, a API marca o registro como `CONCLUIDO` e publica o evento `CapturaConcluida` para os demais serviços.
 7. **Hash do manifesto no e-mail de conclusão** (REQ10, REQ11). O e-mail funciona como um registro externo e datado, guardado pelo usuário e fora do controle do Veridit.
 8. **Data e hora vindas do servidor**, sincronizadas por NTP e gravadas em UTC. O relógio do cliente nunca é usado. O carimbo do tempo ICP-Brasil fica previsto como evolução.
-9. **Armazenamento imutável** dos arquivos em object storage com versionamento e bloqueio de escrita. Um arquivo de evidência gravado não pode ser sobrescrito nem editado.
+9. **Armazenamento imutável** dos arquivos em object storage com versionamento e bloqueio de escrita. Um arquivo de evidência gravado não pode ser sobrescrito nem editado. A única exclusão permitida é o expurgo controlado da ADR-007, ao fim do prazo de retenção ou a pedido do titular.
 10. **Relatório (REQ14) e zip (REQ15) com o manifesto, a assinatura e os hashes**, para que qualquer pessoa possa recalcular os hashes, conferir a assinatura e verificar se os arquivos estão íntegros.
-11. **Trilha de auditoria somente de inclusão**: início, conclusão, falha, geração de relatório e download, cada evento com usuário, data/hora e identificador de rastreio.
-12. **Máquina de estados do registro:** `NA_FILA`, `EM_ANDAMENTO`, `CONCLUIDO`, `FALHOU` e `CANCELADO` (o usuário desistiu). Só registros `CONCLUIDO` geram relatório e zip, o que evita prova incompleta.
+11. **Trilha de auditoria somente de inclusão**: início, conclusão, falha, geração de relatório e geração de link de download, cada evento com usuário, data/hora e identificador de rastreio.
+12. **Máquina de estados do registro:** `NA_FILA`, `EM_ANDAMENTO`, `CONCLUIDO`, `FALHOU` e `CANCELADO` (o usuário desistiu). `NA_FILA` existe só na captura de tela; o vídeo começa direto em `EM_ANDAMENTO`, quando o navegador é alocado (ADR-004). Só a API de Captura muda o estado do registro. Na captura de tela, o worker pede o início pelo broker (pedido e resposta, sem acesso ao banco, ADR-001); a API passa o registro de `NA_FILA` para `EM_ANDAMENTO` numa única operação condicional e só autoriza se ele ainda estiver `NA_FILA`. Se o site não carregar ou a captura der erro, o worker publica `CapturaComErro` e a API marca o registro como `FALHOU`, sem esperar o prazo de expiração (ADR-005). Só registros `CONCLUIDO` geram relatório e zip, o que evita prova incompleta. Uma captura interrompida não é refeita automaticamente: vira `FALHOU`, o crédito volta e o usuário refaz o registro (ADR-003, ADR-005).
 
 ## Metas de verificação
 
@@ -76,9 +79,9 @@ A arquitetura service-based ajuda nessa decisão. O Serviço de Captura é o ún
 | Ganha-se | Perde-se / custo |
 |---|---|
 | Valor probatório e credibilidade jurídica do produto | **Custo de infraestrutura:** a captura no servidor exige navegadores rodando nos workers, em vez de usar o dispositivo do usuário |
-| Verificação independente da integridade (qualquer pessoa recalcula o hash) | **Armazenamento:** arquivos imutáveis e versionados não podem ser compactados nem substituídos, e o volume só cresce |
+| Verificação independente da integridade (qualquer pessoa recalcula o hash) | **Armazenamento:** arquivos imutáveis e versionados não podem ser compactados nem substituídos, e o volume cresce até o fim do prazo de retenção (ADR-007) |
 | Rastreabilidade completa de quem fez o quê e quando | **Desempenho:** calcular hash de vídeos grandes e gerar o manifesto aumenta o tempo até concluir o registro |
-| Prevenção de prova incompleta (máquina de estados) | **Conflito com a LGPD:** a imutabilidade se choca com o direito de exclusão do titular, então é preciso definir política de retenção e expurgo controlado (ver ADR-001) |
+| Prevenção de prova incompleta (máquina de estados) | **Conflito com a LGPD:** a imutabilidade se choca com o direito de exclusão do titular, resolvido pela retenção com prazo e pelo expurgo controlado (ADR-007) |
 | | **Usabilidade:** o usuário não pode editar, cortar ou corrigir uma captura e precisa refazer o registro, consumindo novos créditos |
 | | **Complexidade:** sincronização de relógio, trilha de auditoria e verificação de hashes adicionam componentes e testes |
 
@@ -90,7 +93,7 @@ A arquitetura service-based ajuda nessa decisão. O Serviço de Captura é o ún
 - A trilha de auditoria também serve à segurança (ADR-001) e ao diagnóstico de falhas.
 
 **Negativas / riscos**
-- O custo de armazenamento cresce sempre e precisa de política de retenção definida com o produto.
+- O custo de armazenamento cresce até o fim do prazo de retenção (ADR-007), que ainda precisa ser validado com o produto.
 - Se o relógio dos workers não estiver sincronizado, a validade de todas as evidências fica em risco, então a sincronização precisa ser monitorada.
 - Qualquer serviço que precise alterar evidências exigirá uma nova ADR que substitua esta.
 - A chave privada de assinatura vira um ativo crítico: se vazar, manifestos podem ser forjados. Ela precisa ficar em cofre, com acesso restrito e plano de troca.
