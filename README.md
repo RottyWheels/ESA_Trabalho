@@ -42,7 +42,7 @@ O sistema é dividido em poucos serviços de domínio, de granularidade grossa, 
 - **Monólito modular:** mais simples e barato, mas escala como um bloco só, e uma falha na captura ou um deploy com erro afeta todo o sistema, inclusive pagamentos. Fica como plano B caso o prazo de implementação aperte.
 - **Microsserviços orientados a eventos:** máxima escalabilidade e independência, mas a complexidade operacional (orquestração, rastreamento distribuído, versionamento de eventos) e a consistência eventual em créditos e evidências são desproporcionais ao escopo de 15 requisitos e ao tamanho da equipe.
 
-> A justificativa formal desta decisão será registrada como ADR em [`docs/adr/`](docs/adr/), durante as sessões em sala, conforme as regras da disciplina.
+> A justificativa formal desta decisão, com a comparação entre os estilos considerados, está na [ADR-011](docs/adr/ADR-011-estilo-arquitetural-service-based.md).
 
 ---
 

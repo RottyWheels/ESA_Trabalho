@@ -8,10 +8,17 @@ Conforme as regras do trabalho, ADRs só são criadas, editadas, revisadas ou t�
 
 | ADR | Título | Status |
 |---|---|---|
-| [ADR-001](ADR-001-seguranca.md) | Segurança | Proposto |
-| [ADR-002](ADR-002-integridade-auditabilidade-evidencias.md) | Integridade e auditabilidade das evidências | Proposto |
-| [ADR-003](ADR-003-confiabilidade-transacional-pagamentos.md) | Confiabilidade transacional de pagamentos e créditos | Proposto |
-| [ADR-004](ADR-004-escalabilidade-elasticidade-captura.md) | Escalabilidade e elasticidade da captura | Proposto |
+| [ADR-001](ADR-001-seguranca.md) | Segurança | Aceito |
+| [ADR-002](ADR-002-integridade-auditabilidade-evidencias.md) | Integridade e auditabilidade das evidências | Aceito |
+| [ADR-003](ADR-003-confiabilidade-transacional-pagamentos.md) | Confiabilidade transacional de pagamentos e créditos | Aceito |
+| [ADR-004](ADR-004-escalabilidade-elasticidade-captura.md) | Escalabilidade da captura | Aceito |
+| [ADR-005](ADR-005-disponibilidade-tolerancia-falhas.md) | Disponibilidade e tolerância a falhas | Aceito |
+| [ADR-006](ADR-006-durabilidade-recuperacao-evidencias.md) | Durabilidade e recuperação das evidências | Aceito |
+| [ADR-007](ADR-007-conformidade-lgpd.md) | Conformidade legal e privacidade (LGPD) | Aceito |
+| [ADR-008](ADR-008-interoperabilidade.md) | Interoperabilidade | Aceito |
+| [ADR-009](ADR-009-extensibilidade-manutenibilidade.md) | Extensibilidade e manutenibilidade | Aceito |
+| [ADR-010](ADR-010-desempenho.md) | Desempenho | Aceito |
+| [ADR-011](ADR-011-estilo-arquitetural-service-based.md) | Estilo arquitetural service-based | Aceito |
 
 ## Top 4 características arquiteturais
 
@@ -22,14 +29,16 @@ As quatro características foram escolhidas entre as top 10 do [README](../../RE
 | 1 | Segurança | Único atributo de qualidade explícito nos requisitos, e o sistema trata dados pessoais, financeiros e jurídicos | Desempenho e usabilidade (hash lento, expiração de sessão) e um ponto crítico no Gateway e no Serviço de Identidade |
 | 2 | Integridade e auditabilidade | É o motivo de o produto existir: uma evidência contestável não tem valor | Custo de armazenamento e de captura no servidor, e conflito entre imutabilidade e o direito de exclusão da LGPD |
 | 3 | Confiabilidade transacional | Os créditos envolvem dinheiro do cliente, e pagamentos externos são assíncronos e pouco confiáveis | Complexidade (livro-razão, outbox, idempotência) e latência até o crédito aparecer |
-| 4 | Escalabilidade e elasticidade | A captura é a operação mais cara e o principal gargalo, e é a razão técnica para separar o sistema em serviços | Mais componentes (fila, workers, storage), espera em picos e elasticidade limitada nas sessões de vídeo |
+| 4 | Escalabilidade da captura | A captura é a operação mais cara e o principal gargalo, e é a razão técnica para separar o sistema em serviços | Mais componentes (fila, workers, storage), espera em picos e elasticidade limitada nas sessões de vídeo |
 
 ### Características que ficaram fora do top 4
 
-- **Disponibilidade e tolerância a falhas:** atendidas em boa parte como efeito das ADR-003 e ADR-004 (isolamento de serviços, fila, novas tentativas e estorno).
-- **Durabilidade e recuperação das evidências:** depende de backup, replicação e testes de restauração, decisões de infraestrutura que não mudam a divisão em serviços. Complementa a ADR-002 (integridade garante que a prova não mudou; durabilidade garante que ela não se perde).
-- **Conformidade legal (LGPD):** tratada dentro das ADR-001 e ADR-002 e dos trade-offs entre elas.
-- **Interoperabilidade, extensibilidade e manutenibilidade e desempenho:** importantes, mas resolvidas com padrões de projeto (adaptadores, assincronismo, divisão por domínio) sem definir sozinhas a estrutura da arquitetura.
+Cada uma tem ADR própria, que registra as táticas adotadas e as metas de verificação, mas nenhuma define sozinha a estrutura da arquitetura:
+
+- **Disponibilidade e tolerância a falhas ([ADR-005](ADR-005-disponibilidade-tolerancia-falhas.md)):** em boa parte efeito das ADR-003 e ADR-004 (isolamento, fila, estorno). A ADR-005 completa com Gateway e Identidade replicados, disjuntores, degradação controlada e expiração de reservas presas.
+- **Durabilidade e recuperação das evidências ([ADR-006](ADR-006-durabilidade-recuperacao-evidencias.md)):** backup, replicação e testes de restauração, decisões de infraestrutura que não mudam a divisão em serviços. Complementa a ADR-002: integridade garante que a prova não mudou; durabilidade garante que ela não se perde.
+- **Conformidade legal (LGPD) ([ADR-007](ADR-007-conformidade-lgpd.md)):** parte atendida pela ADR-001. A ADR-007 define bases legais, retenção e o expurgo controlado que resolve o conflito com a imutabilidade da ADR-002.
+- **Interoperabilidade ([ADR-008](ADR-008-interoperabilidade.md)), extensibilidade e manutenibilidade ([ADR-009](ADR-009-extensibilidade-manutenibilidade.md)) e desempenho ([ADR-010](ADR-010-desempenho.md)):** resolvidas com padrões de projeto (adaptadores, perfis, estratégias, camadas, assincronismo, reaproveitamento de arquivos).
 
 ### Tensões entre as características escolhidas
 
