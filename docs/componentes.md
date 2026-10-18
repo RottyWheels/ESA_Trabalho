@@ -13,20 +13,20 @@ Os códigos C01 a C21 são os mesmos usados no diagrama de componentes e no diag
 | Código | Componente | Responsabilidade | Requisitos | Características |
 |---|---|---|---|---|
 | C01 | Aplicação Web | Telas do usuário e da área administrativa, servidas como página estática com cache. Mostra o status das operações demoradas por consulta periódica. | Todos, D2 | Desempenho |
-| C02 | API Gateway | Única entrada das APIs: roteamento, validação local do token, rotas públicas explícitas e limite de tentativas. Liga o navegador do usuário ao worker de vídeo (proxy de sessão). Roda com duas instâncias. | Todos | Segurança, disponibilidade |
+| C02 | API Gateway | Única entrada das APIs: termina o TLS, faz o roteamento, valida localmente o token, rotas públicas explícitas e limite de tentativas. Liga o navegador do usuário ao worker de vídeo (proxy de sessão). Roda com duas instâncias. | Todos | Segurança, disponibilidade |
 
 ### Identidade
 
 | Código | Componente | Responsabilidade | Requisitos | Características |
 |---|---|---|---|---|
-| C03 | Contas e Perfis | Cadastro com conta base e perfil (`Advogado`, `UsuarioComum` e, no futuro, `Empresa`), validação do CPF, confirmação de e-mail e CPF criptografado. Atende os direitos do titular e o encerramento da conta. Fornece nome e CPF ao relatório por API interna. | REQ01, REQ14, D1 | LGPD, extensibilidade |
-| C04 | Autenticação | Login, emissão de JWT e token de renovação, logout com revogação, hash de senha (Argon2), recuperação de senha com token de uso único e publicação da chave pública de verificação. | REQ02, REQ03, REQ04 | Segurança |
+| C03 | Contas e Perfis | Cadastro com conta base e perfil (`Advogado`, `UsuarioComum` e, no futuro, `Empresa`), validação do CPF, confirmação de e-mail (publica `ConfirmacaoEmailSolicitada`) e CPF criptografado. Atende os direitos do titular e o encerramento da conta. Fornece nome e CPF ao relatório por API interna. | REQ01, REQ14, D1 | Segurança, LGPD, extensibilidade |
+| C04 | Autenticação | Login, emissão de JWT e token de renovação, logout com revogação, hash de senha (Argon2), recuperação de senha com token de uso único (publica `RecuperacaoSenhaSolicitada`) e publicação da chave pública de verificação. | REQ02, REQ03, REQ04 | Segurança |
 
 ### Créditos e Pagamentos
 
 | Código | Componente | Responsabilidade | Requisitos | Características |
 |---|---|---|---|---|
-| C05 | Catálogo e Pedidos | Pacotes de créditos como dados, gerenciados pela área administrativa. Pedidos de compra com preço congelado e dados de faturamento no schema isolado. | REQ05, D2 | LGPD, extensibilidade |
+| C05 | Catálogo e Pedidos | Pacotes de créditos como dados, gerenciados pela área administrativa. Pedidos de compra com preço congelado, dados de faturamento no schema isolado e a máquina de estados do pagamento (`PENDENTE`, `APROVADO`, `RECUSADO`, `EXPIRADO`, `ESTORNADO`), atualizada pelos eventos de C06. | REQ05, D2 | Confiabilidade transacional, segurança, LGPD, extensibilidade |
 | C06 | Integração de Pagamentos | Adaptador do Mercado Pago (checkout e Pix). Recebe webhooks validando a assinatura, consultando o provedor e evitando duplicidade. Reconcilia periodicamente os pagamentos pendentes. | REQ06 | Confiabilidade transacional, interoperabilidade |
 | C07 | Livro-razão de Créditos | Lançamentos imutáveis de compra, reserva, consumo, devolução e estorno, cálculo do saldo e regra de saldo negativo. Publica `PagamentoAprovado` e `CreditoDevolvido` pela outbox. | REQ05, REQ07, REQ08 | Confiabilidade transacional |
 
@@ -34,16 +34,16 @@ Os códigos C01 a C21 são os mesmos usados no diagrama de componentes e no diag
 
 | Código | Componente | Responsabilidade | Requisitos | Características |
 |---|---|---|---|---|
-| C08 | API de Captura | Inicia o registro, reserva o crédito, enfileira a captura de tela ou aloca o navegador de vídeo, controla os estados do registro e expira os parados. Ao receber `CapturaExecutada`, confere os hashes, pede a assinatura do manifesto, marca `CONCLUIDO` e publica `CapturaConcluida`. Executa o expurgo controlado e publica `EvidenciaExpurgada`. | REQ08, REQ09, REQ11 | Integridade, disponibilidade, LGPD |
-| C09 | Workers de Captura de Tela | Consomem a fila e fazem cada captura num navegador novo, usando o Gerador de Evidência (C11). Escalam pelo tamanho da fila. | REQ08, REQ11 | Escalabilidade |
-| C10 | Pool de Workers de Vídeo | Mantém containers limpos já iniciados, de uso único, com limite de sessões simultâneas. Transmite a tela para o usuário durante a navegação e usa o Gerador de Evidência (C11). | REQ08, REQ09 | Escalabilidade |
+| C08 | API de Captura | Inicia o registro, reserva o crédito, enfileira a captura de tela ou aloca o navegador de vídeo, controla os estados do registro e expira os parados. Ao receber `CapturaExecutada`, confere os hashes, pede a assinatura do manifesto, marca `CONCLUIDO` e publica `CapturaConcluida`. Executa o expurgo controlado e publica `EvidenciaExpurgada`. Publica todos os seus eventos pela outbox. | REQ08, REQ09, REQ11 | Integridade, confiabilidade transacional, escalabilidade, disponibilidade, LGPD |
+| C09 | Workers de Captura de Tela | Consomem a fila e fazem cada captura num navegador novo, usando o Gerador de Evidência (C11). O número de workers é ajustado manualmente na primeira versão, olhando o tamanho da fila (ADR-004). | REQ08, REQ11 | Escalabilidade |
+| C10 | Pool de Workers de Vídeo | Mantém containers limpos já iniciados, de uso único, com limite de sessões simultâneas. Transmite a tela para o usuário durante a navegação e usa o Gerador de Evidência (C11). | REQ08, REQ09 | Escalabilidade, integridade |
 | C11 | Gerador de Evidência | Módulo comum aos workers: coleta os metadados técnicos (IP, DNS, certificado TLS, cabeçalhos HTTP, HTML), calcula os hashes, monta o manifesto, grava no storage, confere a gravação e publica `CapturaExecutada`. | REQ08, REQ09, REQ11 | Integridade |
 
 ### Registros e Relatórios
 
 | Código | Componente | Responsabilidade | Requisitos | Características |
 |---|---|---|---|---|
-| C12 | Consulta e Download de Registros | Listagem paginada e detalhes dos registros, lidos de uma cópia mantida pelos eventos da Captura. Gera links de download assinados, válidos por poucos minutos, depois de conferir o dono. | REQ12, REQ13, REQ14, REQ15 | Desempenho |
+| C12 | Consulta e Download de Registros | Listagem paginada e detalhes dos registros, lidos de uma cópia mantida pelos eventos da Captura. Confere o dono em toda consulta e pedido de relatório ou zip, e gera links de download assinados, válidos por poucos minutos. | REQ12, REQ13, REQ14, REQ15 | Desempenho, segurança |
 | C13 | Geração de Relatórios e Zips | Workers que geram, uma única vez, o relatório (campos do Apêndice A, manifesto, assinatura e hashes) e o zip, guardados no bucket de arquivos derivados. | REQ14, REQ15 | Extensibilidade, desempenho |
 | C14 | Trilha de Auditoria | Grava, somente por inclusão, o evento `EventoAuditoria` publicado pelos serviços: início, conclusão e falha de capturas, ações no vídeo, geração de relatório e de link de download, e expurgos. | REQ08 a REQ15 | Integridade |
 
@@ -51,15 +51,17 @@ Os códigos C01 a C21 são os mesmos usados no diagrama de componentes e no diag
 
 | Código | Componente | Responsabilidade | Requisitos | Características |
 |---|---|---|---|---|
-| C15 | Notificação | Transforma `PagamentoAprovado` e `CapturaConcluida` em e-mails (o de conclusão leva o hash do manifesto) e os envia por SMTP, com novas tentativas. | REQ07, REQ10, REQ11 | Interoperabilidade |
+| C15 | Notificação | Transforma `PagamentoAprovado`, `CapturaConcluida`, `ConfirmacaoEmailSolicitada` e `RecuperacaoSenhaSolicitada` em e-mails (o de conclusão leva o hash do manifesto) e os envia por SMTP, com novas tentativas. | REQ01, REQ02, REQ07, REQ10, REQ11 | Interoperabilidade |
+
+Todos os serviços validam o token que recebem com a biblioteca comum (ADR-001, item 2; ADR-009, item 6), além da validação no API Gateway (C02).
 
 ## Componentes de infraestrutura e apoio
 
 | Código | Componente | Responsabilidade | Características |
 |---|---|---|---|
 | C16 | Mensageria (RabbitMQ) | Filas duráveis com confirmação manual e fila de mensagens mortas para os fluxos assíncronos. | Escalabilidade, disponibilidade |
-| C17 | Banco de Dados e Backup | PostgreSQL com um schema e um usuário de banco por serviço. Arquivamento contínuo, backup diário e testes mensais de restauração. | Confiabilidade transacional, durabilidade |
-| C18 | Armazenamento de Evidências | MinIO com bucket imutável das evidências, bucket de arquivos derivados e cópia externa. Tarefa periódica que confere os hashes contra o manifesto. | Integridade, durabilidade |
+| C17 | Banco de Dados e Backup | PostgreSQL com um schema e um usuário de banco por serviço, e dados sensíveis criptografados em repouso. Arquivamento contínuo, backup diário e testes mensais de restauração. | Confiabilidade transacional, durabilidade, segurança |
+| C18 | Armazenamento de Evidências | MinIO com bucket imutável das evidências, bucket de arquivos derivados e cópia externa, todos criptografados em repouso. Tarefa periódica que confere os hashes contra o manifesto. | Integridade, durabilidade, segurança |
 | C19 | Cofre de Segredos e Chaves | Guarda credenciais de serviço, segredos e a chave de assinatura dos manifestos. | Segurança |
 | C20 | Ambiente Isolado de Captura | Containers sem privilégios e descartáveis, rede com saída só para a internet, bloqueio de endereços internos e relógio sincronizado por NTP. | Segurança, integridade |
 | C21 | Monitoramento e Alertas | Acompanha disponibilidade, filas, fila de mensagens mortas, atraso da cópia externa e relógio dos workers. | Disponibilidade |
@@ -74,7 +76,7 @@ Os 7 componentes abaixo (33% do total) serão detalhados internamente no diagram
 | C04 | Autenticação | Login, emissão e revogação de tokens, recuperação de senha, hash de senha | Segurança |
 | C06 | Integração de Pagamentos | Adaptador do Mercado Pago, receptor de webhooks, reconciliação | Confiabilidade transacional |
 | C07 | Livro-razão de Créditos | Lançamentos, cálculo de saldo, reserva e devolução, outbox | Confiabilidade transacional |
-| C08 | API de Captura | Início e reserva de crédito, máquina de estados, expiração, conferência e assinatura, expurgo | Integridade, escalabilidade |
+| C08 | API de Captura | Início e reserva de crédito, máquina de estados, expiração, conferência e assinatura, expurgo, outbox | Integridade, confiabilidade transacional, escalabilidade |
 | C10 | Pool de Workers de Vídeo | Alocação de sessão, navegador remoto, transmissão de tela | Escalabilidade, integridade |
 | C11 | Gerador de Evidência | Coletor de metadados, cálculo de hashes, montagem do manifesto, gravação e conferência | Integridade |
 
@@ -89,8 +91,8 @@ Os 7 componentes abaixo (33% do total) serão detalhados internamente no diagram
 
 | Requisito | Componentes |
 |---|---|
-| REQ01 Cadastrar usuário | C03 |
-| REQ02 Recuperar senha | C04 |
+| REQ01 Cadastrar usuário | C03, C15 |
+| REQ02 Recuperar senha | C04, C15 |
 | REQ03 e REQ04 Login e logout | C04, C02 |
 | REQ05 Comprar créditos | C05, C07 |
 | REQ06 Efetuar pagamento | C06 |

@@ -22,7 +22,7 @@ O sistema é dividido em poucos serviços de domínio, de granularidade grossa, 
 | **Créditos e Pagamentos** | Pacotes de créditos, dados de faturamento, Mercado Pago, Pix (QR Code/chave), webhooks e registro de movimentação de créditos | REQ05–06, D2 |
 | **Captura** | Sessão de captura, fila de trabalhos e workers com navegador sem interface que geram imagens e vídeos com hash e data/hora | REQ08, REQ09, REQ11 |
 | **Registros e Relatórios** | Listagem e detalhes dos registros, geração do relatório e do arquivo zip | REQ12–15 |
-| **Notificação** | Recebe eventos (pagamento aprovado, captura concluída) e envia os e-mails | REQ07, REQ10, REQ11 |
+| **Notificação** | Recebe eventos (pagamento aprovado, captura concluída, confirmação de e-mail do cadastro e recuperação de senha) e envia os e-mails | REQ07, REQ10, REQ11 |
 
 ### Por que Service-based é a mais apropriada para o Veridit
 
