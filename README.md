@@ -7,6 +7,7 @@ O Veridit é uma plataforma de registro de evidências digitais: o usuário (adv
 - Documento de requisitos: [`veridit-req.pdf`](veridit-req.pdf)
 - Enunciado do trabalho: [`trabalhoII.pdf`](trabalhoII.pdf)
 - Registros de decisões arquiteturais: [`docs/adr/`](docs/adr/)
+- Componentes candidatos: [`docs/componentes.md`](docs/componentes.md)
 
 ---
 
