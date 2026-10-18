@@ -8,6 +8,7 @@
 - **Revisão 2 (17/10/2026):** Correções de coerência com as demais ADRs: comunicação dos workers só por eventos, entrada do vídeo pelo proxy do Gateway, links temporários de download, rotas públicas completas, disponibilidade do Gateway e da Identidade (ADR-005) e referência à ADR-007. Feita com apoio de IA fora de sala, com autorização excepcional do professor.
 - **Revisão 3 (17/10/2026):** Checklist de revisão (B2: autenticação entre serviços; D1: cabeçalho). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
 - **Revisão 4 (17/10/2026):** Coerência com as demais ADRs: o worker pede o início da captura de tela à API de Captura pelo broker, sem ler o banco (item 13). Feita com apoio de IA fora de sala.
+- **Revisão 5 (18/10/2026):** Coerência com os componentes candidatos: e-mails de recuperação de senha e de confirmação do cadastro enviados pelo Serviço de Notificação, a partir de eventos da Identidade (itens 6 e 8). Feita com apoio de IA fora de sala.
 
 ## Contexto
 
@@ -35,9 +36,9 @@ Adotar **Segurança** como característica arquitetural prioritária (1ª do top
 3. **Rotas públicas explícitas.** As únicas rotas sem token de acesso são cadastro, confirmação de e-mail, login, renovação do token (que exige o token de renovação), recuperação de senha, a chave pública de verificação dos manifestos (ADR-002) e os webhooks dos provedores de pagamento. Os webhooks são protegidos pela validação da assinatura do provedor e pela consulta ativa ao provedor antes de aprovar qualquer pagamento (ADR-003).
 4. **Autorização por perfil e por dono do recurso.** Todo acesso a registros, relatórios e arquivos confere se o recurso pertence ao usuário autenticado.
 5. **Senhas guardadas com hash forte e lento** (Argon2 ou bcrypt), nunca em texto puro.
-6. **Recuperação de senha** com token de uso único, prazo de validade curto e envio só para o e-mail cadastrado.
+6. **Recuperação de senha** com token de uso único, prazo de validade curto e envio só para o e-mail cadastrado. A Identidade publica o evento `RecuperacaoSenhaSolicitada` e o Serviço de Notificação envia o e-mail (ADR-008).
 7. **Logout efetivo** (REQ04): o token de renovação é revogado e a sessão é encerrada no servidor. O token de acesso tem validade de no máximo 15 minutos, então continua aceito só até expirar.
-8. **Confirmação do e-mail no cadastro** (REQ01), já que a recuperação de senha depende dele, e **validação do CPF** pelos dígitos verificadores.
+8. **Confirmação do e-mail no cadastro** (REQ01), já que a recuperação de senha depende dele, e **validação do CPF** pelos dígitos verificadores. O e-mail de confirmação também sai pelo Serviço de Notificação, a partir do evento `ConfirmacaoEmailSolicitada` (ADR-008).
 9. **Proteção dos dados:** TLS em toda comunicação externa e criptografia em repouso dos dados sensíveis e das evidências.
 10. **Isolamento do schema de pagamentos**, com credenciais de banco próprias, acessíveis só pelo Serviço de Créditos e Pagamentos.
 11. **Limite de tentativas** de login e de recuperação de senha, contra força bruta.
