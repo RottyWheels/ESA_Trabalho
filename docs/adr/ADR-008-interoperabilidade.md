@@ -7,6 +7,7 @@
 - **Revisão 1 (17/10/2026):** Correções de coerência com as demais ADRs: impacto da queda do Mercado Pago alinhado à ADR-005 (compras ficam indisponíveis). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
 - **Revisão 2 (17/10/2026):** Checklist de revisão (D1: cabeçalho). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
 - **Revisão 3 (17/10/2026):** Coerência com as demais ADRs: catálogo de eventos com produtor e consumidores (item 6) e evento `PagamentoEstornado` na camada anticorrupção (item 2). Feita com apoio de IA fora de sala.
+- **Revisão 4 (17/10/2026):** Agrupamento dos componentes candidatos: eventos `EventoAuditoria` e `EvidenciaExpurgada` no catálogo (item 6). Feita com apoio de IA fora de sala.
 
 ## Contexto
 
@@ -56,6 +57,8 @@ Tratar **interoperabilidade** com as seguintes táticas:
    | `RegistroCriado` | API de Captura (outbox) | Registros e Relatórios (cópia de leitura, ADR-009) |
    | `CapturaConcluida` | API de Captura (outbox) | Registros e Relatórios (cópia de leitura e geração de relatório e zip, ADR-010), Créditos e Pagamentos (consumo da reserva, ADR-003), Notificação (e-mail com o hash do manifesto, REQ10, REQ11, ADR-002) |
    | `CapturaFalhou`, `CapturaCancelada` | API de Captura (outbox) | Registros e Relatórios (cópia de leitura), Créditos e Pagamentos (devolução da reserva, ADR-003) |
+   | `EvidenciaExpurgada` | API de Captura (outbox, ADR-007) | Registros e Relatórios (apaga a cópia de leitura e os relatórios e zips, e registra na trilha de auditoria) |
+   | `EventoAuditoria` | Todos os serviços | Registros e Relatórios (trilha de auditoria, ADR-002) |
    | `CapturaExecutada`, `CapturaComErro` | Worker de captura | Só a API de Captura (ADR-002) |
    | Pedido de início da captura de tela (pedido e resposta) | Worker de captura | Só a API de Captura, que responde se o worker pode começar (ADR-002) |
 7. **Configuração externa.** Credenciais, URLs e escolha do adaptador ficam em variáveis de ambiente ou no cofre de segredos (ADR-001), não no código.
