@@ -8,6 +8,7 @@
 - **Revisão 2 (17/10/2026):** Checklist de revisão (A3: eventos publicados pela API de Captura; D1: cabeçalho). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
 - **Revisão 3 (17/10/2026):** Coerência com as demais ADRs: mensagens internas do worker (`CapturaComErro` e pedido de início) e referência ao catálogo de eventos da ADR-008. Feita com apoio de IA fora de sala.
 - **Revisão 4 (17/10/2026):** Agrupamento dos componentes candidatos: área administrativa como telas na interface web e rotas administrativas em cada serviço (item 2). Feita com apoio de IA fora de sala.
+- **Revisão 5 (18/10/2026):** Coerência com a ADR-001: a biblioteca compartilhada inclui a validação do token de acesso usada por todos os serviços (item 6). Feita com apoio de IA fora de sala.
 
 ## Contexto
 
@@ -49,7 +50,7 @@ Tratar **extensibilidade e manutenibilidade** com as seguintes táticas:
 5. **Cada serviço só acessa o próprio schema.** Cada serviço usa um usuário de banco com permissão apenas no seu schema. Dados de outro serviço são obtidos pela API ou por eventos, nunca por consulta direta às tabelas dele.
    - O **registro de conteúdo** pertence ao Serviço de Captura, que o cria (REQ08), controla seu estado e guarda o manifesto. O Serviço de Registros e Relatórios mantém uma cópia somente de leitura dos dados de listagem e detalhes (REQ12, REQ13), atualizada pelos eventos publicados pela API de Captura (`RegistroCriado`, `CapturaConcluida`, `CapturaFalhou`, `CapturaCancelada`). As mensagens internas do worker para a API de Captura (`CapturaExecutada`, `CapturaComErro` e o pedido de início) não são consumidas por outros serviços. O catálogo completo, com produtor e consumidores de cada evento, fica na ADR-008.
    - Os dados do usuário que aparecem no relatório (nome e CPF, REQ14) são obtidos da Identidade por API interna no momento da geração, porque o CPF fica criptografado no schema dela (ADR-007).
-6. **Repositório único com uma pasta por serviço.** Uma biblioteca compartilhada mínima, só com contratos de eventos e utilitários de observabilidade. Regras de negócio nunca são compartilhadas entre serviços.
+6. **Repositório único com uma pasta por serviço.** Uma biblioteca compartilhada mínima, só com contratos de eventos, validação do token de acesso (usada por todos os serviços, ADR-001) e utilitários de observabilidade. Regras de negócio nunca são compartilhadas entre serviços.
 7. **Qualidade automatizada na integração contínua:** formatação e análise estática, testes de unidade do domínio, testes de contrato (ADR-008) e testes de integração com banco e fila em containers.
 8. **Decisões registradas.** Mudanças significativas de arquitetura passam por uma nova ADR, que substitui ou complementa as anteriores.
 
