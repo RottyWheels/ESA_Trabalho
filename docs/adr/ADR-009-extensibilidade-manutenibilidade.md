@@ -7,6 +7,7 @@
 - **Revisão 1 (17/10/2026):** Correções de coerência com as demais ADRs: dono da entidade registro de conteúdo e forma de obter os dados do usuário para o relatório. Feita com apoio de IA fora de sala, com autorização excepcional do professor.
 - **Revisão 2 (17/10/2026):** Checklist de revisão (A3: eventos publicados pela API de Captura; D1: cabeçalho). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
 - **Revisão 3 (17/10/2026):** Coerência com as demais ADRs: mensagens internas do worker (`CapturaComErro` e pedido de início) e referência ao catálogo de eventos da ADR-008. Feita com apoio de IA fora de sala.
+- **Revisão 4 (17/10/2026):** Agrupamento dos componentes candidatos: área administrativa como telas na interface web e rotas administrativas em cada serviço (item 2). Feita com apoio de IA fora de sala.
 
 ## Contexto
 
@@ -36,6 +37,7 @@ Tratar **extensibilidade e manutenibilidade** com as seguintes táticas:
 
 1. **Tipos de usuário como perfis (D1).** Uma conta base (e-mail, senha, nome) com um perfil associado: `Advogado` (CPF, OAB), `UsuarioComum` (CPF) e, no futuro, `Empresa` (CNPJ, representante). Cada perfil tem sua tabela. Incluir empresas significa criar um novo perfil, sem mudar a autenticação nem os outros perfis.
 2. **Pacotes de créditos como dados (D2).** Nome, quantidade de créditos, valor por crédito e benefícios ficam numa tabela gerenciada por uma área administrativa, não no código. Um novo pacote não exige nova versão do sistema. O preço é copiado para o pedido no momento da compra (ADR-003).
+   - A área administrativa não é um serviço à parte: as telas ficam na interface web, e cada serviço expõe as próprias rotas administrativas (pacotes em Créditos e Pagamentos, expurgo na Captura, ADR-007), acessíveis só com o perfil de administrador, conferido no Gateway e no serviço (ADR-001). Assim, nenhum componente administrativo acessa o schema de outro serviço (item 5).
 3. **Tipos de captura e formatos de saída como estratégias.** Cada tipo de captura (`CapturaTela`, `CapturaVideo`) e cada formato de saída (`RelatorioPdf`, `ArquivoZip`) implementa uma interface comum e é registrado num catálogo. Um novo tipo entra como nova classe registrada, sem alterar o fluxo principal.
 4. **Mesma estrutura interna em todos os serviços**, em camadas:
    - `api`: controladores, validação de entrada e contratos OpenAPI;
