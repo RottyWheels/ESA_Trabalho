@@ -8,6 +8,7 @@
 - **Revisão 2 (17/10/2026):** Checklist de revisão (D1: cabeçalho). Feita com apoio de IA fora de sala, com autorização excepcional do professor.
 - **Revisão 3 (17/10/2026):** Coerência com as demais ADRs: catálogo de eventos com produtor e consumidores (item 6) e evento `PagamentoEstornado` na camada anticorrupção (item 2). Feita com apoio de IA fora de sala.
 - **Revisão 4 (17/10/2026):** Agrupamento dos componentes candidatos: eventos `EventoAuditoria` e `EvidenciaExpurgada` no catálogo (item 6). Feita com apoio de IA fora de sala.
+- **Revisão 5 (18/10/2026):** Coerência com os componentes candidatos: eventos `ConfirmacaoEmailSolicitada` e `RecuperacaoSenhaSolicitada` no catálogo (item 6). Feita com apoio de IA fora de sala.
 
 ## Contexto
 
@@ -52,6 +53,7 @@ Tratar **interoperabilidade** com as seguintes táticas:
    | Evento | Produtor | Consumidores |
    |---|---|---|
    | `PagamentoAprovado` | Créditos e Pagamentos (outbox, ADR-003) | Notificação (e-mail de confirmação, REQ07) |
+   | `ConfirmacaoEmailSolicitada`, `RecuperacaoSenhaSolicitada` | Identidade | Notificação (e-mail de confirmação do cadastro, REQ01, e de recuperação de senha, REQ02, ADR-001). O link com o token de uso único vai só na mensagem e é mascarado nos logs (ADR-007) |
    | `PagamentoRecusado`, `PagamentoExpirado`, `PagamentoEstornado` | Camada anticorrupção de Créditos e Pagamentos | O próprio Serviço de Créditos e Pagamentos (máquina de estados e livro-razão, ADR-003) |
    | `CreditoDevolvido` | Créditos e Pagamentos (outbox, ADR-003) | Nenhum obrigatório na primeira versão; fica disponível para aviso ao usuário |
    | `RegistroCriado` | API de Captura (outbox) | Registros e Relatórios (cópia de leitura, ADR-009) |
