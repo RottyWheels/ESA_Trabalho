@@ -1,0 +1,329 @@
+@startuml pacotes
+' Veridit - Diagrama de pacotes UML (ADR-009, ADR-011)
+' Fonte textual equivalente a docs/diagramas/pacotes.png e pacotes.svg
+' Estilo service-based em repositório único (ADR-009, item 6): uma pasta por serviço,
+' todas com as camadas api -> aplicacao -> dominio <- infraestrutura.
+' Códigos C01-C21 iguais aos do diagrama de componentes.
+skinparam packageStyle folder
+skinparam shadowing false
+hide empty members
+hide circle
+top to bottom direction
+' Borda espessa: componentes críticos (C02, C04, C06, C07, C08, C10, C11) e os pacotes de serviço que os contêm
+skinparam package<<critico>> {
+  BorderThickness 2.5
+  BorderColor #1d5c63
+}
+
+package "web «aplicação» C01 · React + Vite (SPA)" as web {
+  package paginas {
+    class "Cadastro, Login, Senha" as w_p1
+    class "Créditos e Pagamento" as w_p2
+    class "Registros, Captura, Admin" as w_p3
+  }
+  package componentes {
+    class "UI (MUI / shadcn)" as w_c1
+    class "acompanhamento de status" as w_c2
+  }
+  package "cliente-api" as w_cli {
+    class "chamadas /v1 ao Gateway" as w_a1
+    class "renovação do token" as w_a2
+  }
+}
+
+package "gateway «serviço de borda» C02 · Fastify (2 instâncias)" as gateway <<critico>> {
+  package roteamento {
+    class "rotas /v1 por serviço" as g_r1
+    class "rotas públicas explícitas" as g_r2
+  }
+  package "validacao-token" as g_val {
+    class "JWT validado localmente" as g_v1
+    class "perfil admin conferido" as g_v2
+  }
+  package "limite-tentativas" as g_lim {
+    class "login e recuperação de senha (rate limit)" as g_l1
+  }
+  package "proxy-video" as g_prx {
+    class "WebSocket usuário <-> worker de vídeo (C10)" as g_p1
+  }
+}
+
+package "compartilhado «biblioteca» mínima, sem regras de negócio (ADR-009, item 6)" as comp {
+  package "contratos-eventos" as s_ctr {
+    class "esquemas versionados (ADR-008)" as s_c1
+    class "PagamentoAprovado, CapturaConcluida, ... (catálogo)" as s_c2
+  }
+  package "auth-token" as s_auth {
+    class "ValidadorJwt (jose)" as s_a1
+    class "chave pública da Identidade" as s_a2
+  }
+  package observabilidade as s_obs {
+    class "logs com mascaramento" as s_o1
+    class "métricas e saúde" as s_o2
+  }
+}
+
+package "servicos «subsistema» seis serviços de domínio, implantados de forma independente; nenhum importa outro serviço" as servicos {
+
+  package "identidade «serviço» C03, C04 · schema identidade" as ident <<critico>> {
+    package api as i_api {
+      class ContasController
+      class AutenticacaoController
+      class "rotas admin (perfil admin)" as i_adm
+    }
+    package aplicacao as i_app {
+      class "CadastrarUsuario (REQ01)" as i_uc1
+      class "RecuperarSenha (REQ02)" as i_uc2
+      class "EfetuarLogin (REQ03)" as i_uc3
+      class "EfetuarLogout (REQ04)" as i_uc4
+      class AtenderTitularLgpd
+    }
+    package dominio as i_dom {
+      class Conta
+      abstract class Perfil
+      class Advogado
+      class UsuarioComum
+      class "Empresa (D1, futuro)" as Empresa
+      class TokenRecuperacao
+      interface RepositorioContas <<port>>
+      interface HashSenha <<port>>
+      Perfil <|-- Advogado
+      Perfil <|-- UsuarioComum
+      Perfil <|-- Empresa
+    }
+    package infraestrutura as i_inf {
+      class RepositorioContasPrisma
+      class HashSenhaArgon2
+      class "EmissorJwt (jose)" as EmissorJwt
+      class CriptografiaCpf
+      class "Outbox / PublicadorEventos" as i_out
+    }
+  }
+
+  package "creditos-pagamentos «serviço» C05, C06, C07 · schema pagamentos (isolado)" as cred <<critico>> {
+    package api as c_api {
+      class PacotesController
+      class PedidosController
+      class WebhookMercadoPagoController
+      class "rotas admin de pacotes (D2)" as c_adm
+    }
+    package aplicacao as c_app {
+      class "ComprarCreditos (REQ05)" as c_uc1
+      class "EfetuarPagamento (REQ06)" as c_uc2
+      class ProcessarNotificacaoPagamento
+      class ReservarCredito
+      class "ConsumirCredito (evento CapturaConcluida)" as c_consumir
+      class DevolverCredito
+      class ReconciliarPendentes
+    }
+    package dominio as c_dom {
+      class "Pacote (dados, D2)" as Pacote
+      class "Pedido «máquina de estados»" as Pedido
+      class "LancamentoCredito (imutável)" as LancamentoCredito
+      class Saldo
+      interface ProvedorPagamento <<port>>
+      interface RepositorioLivroRazao <<port>>
+    }
+    package infraestrutura as c_inf {
+      class AdaptadorMercadoPago
+      class CamadaAnticorrupcaoWebhook
+      class RepositorioLivroRazaoPrisma
+      class "Outbox / PublicadorEventos" as c_out
+      class "ConsumidorEventosCaptura" as c_cons
+    }
+  }
+
+  package "captura «serviço» C08-C11 · schema captura" as cap <<critico>> {
+    package api as k_api {
+      class RegistrosCapturaController
+      class SessaoVideoController
+      class "rotas admin de expurgo" as k_adm
+    }
+    package aplicacao as k_app {
+      class "IniciarRegistro (REQ08)" as k_uc1
+      class "ConcluirGravacao (REQ09)" as k_uc2
+      class "ConcluirCaptura (REQ11)" as k_uc3
+      class ConferirEAssinarManifesto
+      class ExpirarParados
+      class Expurgar
+    }
+    package dominio as k_dom {
+      class "RegistroConteudo «estados»" as RegistroConteudo
+      class Manifesto
+      interface TipoCaptura
+      class CapturaTela
+      class CapturaVideo
+      interface NavegadorCaptura <<port>>
+      interface "ArmazenamentoEvidencias" as k_arm <<port>>
+      interface AssinadorManifesto <<port>>
+      TipoCaptura <|.. CapturaTela
+      TipoCaptura <|.. CapturaVideo
+    }
+    package infraestrutura as k_inf {
+      class NavegadorPlaywright
+      class "ArmazenamentoS3 (MinIO)" as ArmazenamentoS3
+      class "AssinadorEd25519 (cofre C19)" as AssinadorEd25519
+      class FilaCapturaRabbit
+      class "Outbox / PublicadorEventos" as k_out
+    }
+    package "gerador-evidencia «módulo comum aos workers» C11" as k_ger <<critico>> {
+      class "ColetorMetadados (IP, DNS, TLS, HTML)" as ColetorMetadados
+      class "CalculadoraHash (SHA-256)" as CalculadoraHash
+      class MontadorManifesto
+      class "GravadorConferidor -> CapturaExecutada" as GravadorConferidor
+    }
+    package "worker-tela «processo» C09" as k_wrk_tela {
+      class "captura de tela pela fila" as k_w1
+      class "ambiente isolado C20" as k_w3a
+    }
+    package "worker-video «processo» C10" as k_wrk_video <<critico>> {
+      class "sessão ao vivo (CDP)" as k_w2
+      class "ambiente isolado C20" as k_w3b
+    }
+  }
+
+  package "registros-relatorios «serviço» C12, C13, C14 · schema registros" as reg {
+    package api as r_api {
+      class ConsultaRegistrosController
+      class DownloadsController
+    }
+    package aplicacao as r_app {
+      class "ListarRegistros (REQ12)" as r_uc1
+      class "DetalharRegistro (REQ13)" as r_uc2
+      class "GerarRelatorio (REQ14)" as r_uc3
+      class "GerarZip (REQ15)" as r_uc4
+      class RegistrarAuditoria
+    }
+    package dominio as r_dom {
+      class "CopiaRegistro (só leitura)" as CopiaRegistro
+      interface FormatoSaida
+      class RelatorioPdf
+      class ArquivoZip
+      class "EventoAuditoria (só inclusão)" as EventoAuditoria
+      interface "ArmazenamentoEvidencias" as r_arm <<port>>
+      interface ClienteIdentidade <<port>>
+      FormatoSaida <|.. RelatorioPdf
+      FormatoSaida <|.. ArquivoZip
+    }
+    package infraestrutura as r_inf {
+      class "ConsumidorEventosCaptura" as r_cons
+      class LinksAssinadosS3
+      class GeradorPdfPlaywright
+      class GeradorZipArchiver
+      class ClienteHttpIdentidade
+    }
+  }
+
+  package "notificacao «serviço» C15 · sem schema de negócio" as notif {
+    package api as n_api {
+      class "apenas saúde (sem rotas de negócio)" as n_saude
+    }
+    package aplicacao as n_app {
+      class "EnviarConfirmacaoCadastro (REQ01)" as n_uc1
+      class "EnviarRecuperacaoSenha (REQ02)" as n_uc2
+      class "EnviarConfirmacaoPagamento (REQ07)" as n_uc3
+      class "EnviarConfirmacaoCaptura (REQ10, 11)" as n_uc4
+    }
+    package dominio as n_dom {
+      class ModeloEmail
+      class Destinatario
+      interface EnvioEmail <<port>>
+    }
+    package infraestrutura as n_inf {
+      class ConsumidorEventos
+      class "AdaptadorSmtp (Nodemailer)" as AdaptadorSmtp
+      class PoliticaNovasTentativas
+    }
+  }
+}
+
+package "Bibliotecas e sistemas externos «external» (usadas por web, gateway, compartilhado e pelas camadas api e infraestrutura; nunca por dominio)" as ext {
+  package "prisma / pg" as x_pg {
+    class "PostgreSQL 16 (C17), um schema por serviço" as x_pg1
+  }
+  package amqplib as x_amqp {
+    class "RabbitMQ (C16), filas duráveis + DLQ" as x_amqp1
+  }
+  package "client-s3" as x_s3 {
+    class "MinIO (C18), bucket imutável" as x_s31
+  }
+  package playwright as x_pw {
+    class "Chromium headless: captura, vídeo, PDF" as x_pw1
+  }
+  package mercadopago as x_mp {
+    class "SDK checkout e Pix, webhooks (externo)" as x_mp1
+  }
+  package nodemailer as x_nm {
+    class "SMTP (externo), Mailpit em teste" as x_nm1
+  }
+  package "jose / argon2" as x_jose {
+    class "JWT e hash de senha, node:crypto (Ed25519)" as x_jose1
+  }
+  package "fastify / nestjs" as x_fw {
+    class "HTTP, OpenAPI, Zod, opossum, schedule" as x_fw1
+  }
+}
+
+' Dependências entre pacotes de topo
+web ..> gateway : HTTP /v1
+gateway ..> comp : «import»
+gateway ..> servicos : «use» roteia HTTP /v1
+servicos ..> comp : «import» (todos os serviços)
+servicos ..> ext : «import» (todas as camadas, exceto dominio)
+
+' Camadas de cada serviço: api -> aplicacao -> dominio <- infraestrutura
+i_api ..> i_app : «import»
+i_app ..> i_dom : «import»
+i_inf ..> i_dom : «import» implementa ports
+c_api ..> c_app : «import»
+c_app ..> c_dom : «import»
+c_inf ..> c_dom : «import» implementa ports
+k_api ..> k_app : «import»
+k_app ..> k_dom : «import»
+k_inf ..> k_dom : «import» implementa ports
+k_ger ..> k_inf : «import»
+k_ger ..> k_dom : «import»
+k_wrk_tela ..> k_ger : «import»
+k_wrk_video ..> k_ger : «import»
+r_api ..> r_app : «import»
+r_app ..> r_dom : «import»
+r_inf ..> r_dom : «import» implementa ports
+n_api ..> n_app : «import»
+n_app ..> n_dom : «import»
+n_inf ..> n_dom : «import» implementa ports
+
+note as regras
+  <b>Regras de dependência</b>
+  1. Dependências só de fora para dentro: dominio não importa nada
+     de framework, banco, fila ou provedor (ADR-009, item 4).
+  2. Ports ficam em dominio; adaptadores em infraestrutura (ADR-008).
+  3. Nenhum serviço importa outro serviço. A comunicação é por HTTP /v1
+     (OpenAPI) ou por eventos da fila, usando compartilhado.contratos-eventos.
+  4. Cada serviço acessa só o próprio schema no PostgreSQL (ADR-009, item 5).
+  5. Novos tipos de captura e formatos de saída entram como classes que
+     implementam TipoCaptura / FormatoSaida (ADR-009, item 3).
+  6. Bibliotecas externas nunca aparecem em dominio.
+end note
+
+note as infra
+  <b>Pasta /infra (configuração, não é código de domínio)</b>
+  Os componentes de infraestrutura e apoio não viram pacotes de código:
+  são configurados no Docker Compose da pasta /infra.
+  C16 Mensageria -> RabbitMQ: filas duráveis, ack manual e DLQ
+  C17 Banco e Backup -> PostgreSQL 16 + pgBackRest (um usuário por schema)
+  C18 Evidências -> MinIO com Object Lock + cópia externa (mc mirror)
+  C19 Cofre -> variáveis de ambiente / .env no MVP; OpenBao na evolução
+  C20 Ambiente isolado -> rede Docker separada, Smokescreen, chrony
+  C21 Monitoramento -> Prometheus + Alertmanager
+  Rastreio: C03-C04 identidade · C05-C07 creditos-pagamentos ·
+  C08-C11 captura · C12-C14 registros-relatorios · C15 notificacao
+end note
+
+legend bottom
+  Pasta com aba: pacote UML. Seta tracejada aberta: dependência («import» = usa elementos
+  públicos do pacote; «use» = chamada em tempo de execução). «port» / interface: abstrações
+  implementadas por infraestrutura (portas e adaptadores, ADR-008) ou por estratégias (ADR-009).
+  Borda espessa: componentes críticos (C02, C04, C06, C07, C08, C10, C11) e os pacotes de serviço que os contêm.
+  Estrutura de pastas: /web, /gateway, /servicos/<nome>/{api,aplicacao,dominio,infraestrutura}, /compartilhado.
+endlegend
+@enduml

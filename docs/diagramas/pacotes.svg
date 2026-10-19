@@ -1,0 +1,390 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2620" height="2066" viewBox="0 0 2620 2066" font-family="Inter, sans-serif" xmlns:c2pa="http://c2pa.org/manifest"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYToxZWY5Mzk3Ni1mMTUzLTQ5MTctOGUxYy0yOGYzOWY5MzAzMDcAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaM88EboPQ2fSOhdduuGvrEMAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDphOWVhNGM4Yy0xMGQxLTQ4YzItODE3OS1mODc2Njk0MDhmYTdscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoROiWxDLdpa3sQfyp4HVbygAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggCxAwZgUpXWTKME2fZrvq50wqrNKwILb31/1NtEQO50ikZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaK4gou2uYk5FcIa9e4IOC1wAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCBQxIdGquFX731v1tI3qe5Ha253IfG6pNFMt7pZsfQCw2RuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBi6Zmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjFlZjkzOTc2LWYxNTMtNDkxNy04ZTFjLTI4ZjM5ZjkzMDMwNy9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjc0MDBjOWZjLWM4NTctNDlkMi04ZDgzLWNjZWZkZTU0YmQ5ZHJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCALEDBmBSldZMowTZ9mu+rnTCqs0rAgtvfX/U20RA7nSKJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggxUq+YHHsPnHUVAsN6FMH8o09ahJxa8IN4q1hWgVE9NGiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggVQI9qBRO6Bv3uTJegde+Y2KzfnWJaOPBb27f3qWaZo90Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQLba4+sHOK2yCOhAjfgTUY/T8yFssMroUm6FPqM7pejGzmF3d3myawlrxGE0G8P9l+kEb73NkpvYFpiz9YR1w6Y=</c2pa:manifest></metadata><defs>
+<marker id="open" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+<path d="M1,1 L11,6 L1,11" fill="none" stroke="#55606b" stroke-width="1.4"/></marker>
+</defs><rect width="2620" height="2066" fill="#ffffff"/><text x="60" y="66" font-size="30" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">Veridit · Diagrama de pacotes (UML)</text>
+<text x="60" y="96" font-size="14" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">Estilo service-based (ADR-011) em repositório único (ADR-009, item 6): uma pasta por serviço, todas com as camadas api → aplicacao → dominio ← infraestrutura. Códigos C01–C21 iguais aos do diagrama de componentes.</text>
+<rect x="55" y="140" width="110" height="24" fill="#f4f2ec" stroke="#d8d3c6" stroke-width="1.2"/>
+<rect x="55" y="164" width="600" height="206" fill="#f4f2ec" stroke="#d8d3c6" stroke-width="1.2"/>
+<text x="67" y="157" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">web</text>
+<text x="67" y="184" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«aplicação» C01 · React + Vite (SPA)</text>
+<rect x="75" y="208" width="90" height="24" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<rect x="75" y="232" width="180" height="126" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<text x="87" y="225" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">paginas</text>
+<text x="87" y="254" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">Cadastro, Login, Senha</text>
+<text x="87" y="272" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">Créditos e Pagamento</text>
+<text x="87" y="290" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">Registros, Captura, Admin</text>
+<rect x="265" y="208" width="114" height="24" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<rect x="265" y="232" width="180" height="126" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<text x="277" y="225" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">componentes</text>
+<text x="277" y="254" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">UI (MUI / shadcn)</text>
+<text x="277" y="272" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">acompanhamento de status</text>
+<rect x="455" y="208" width="114" height="24" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<rect x="455" y="232" width="180" height="126" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<text x="467" y="225" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">cliente-api</text>
+<text x="467" y="254" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">chamadas /v1 ao Gateway</text>
+<text x="467" y="272" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">renovação do token</text>
+<rect x="715" y="140" width="130" height="24" fill="#f4f2ec" stroke="#1d5c63" stroke-width="2.2"/>
+<rect x="715" y="164" width="1000" height="206" fill="#f4f2ec" stroke="#1d5c63" stroke-width="2.2"/>
+<text x="727" y="157" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">gateway</text>
+<text x="727" y="184" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«serviço de borda» C02 · Fastify (2 instâncias)</text>
+<rect x="735" y="208" width="106" height="24" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<rect x="735" y="232" width="228" height="126" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<text x="747" y="225" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">roteamento</text>
+<text x="747" y="254" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">rotas /v1 por serviço</text>
+<text x="747" y="272" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">rotas públicas explícitas</text>
+<rect x="976" y="208" width="146" height="24" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<rect x="976" y="232" width="228" height="126" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<text x="988" y="225" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">validacao-token</text>
+<text x="988" y="254" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">JWT validado localmente</text>
+<text x="988" y="272" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">perfil admin conferido</text>
+<rect x="1217" y="208" width="163" height="24" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<rect x="1217" y="232" width="228" height="126" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<text x="1229" y="225" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">limite-tentativas</text>
+<text x="1229" y="254" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">login e recuperação</text>
+<text x="1229" y="272" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">de senha (rate limit)</text>
+<rect x="1458" y="208" width="114" height="24" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<rect x="1458" y="232" width="228" height="126" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<text x="1470" y="225" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">proxy-video</text>
+<text x="1470" y="254" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">WebSocket usuário ↔</text>
+<text x="1470" y="272" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">worker de vídeo (C10)</text>
+<rect x="1775" y="140" width="150" height="24" fill="#f4f2ec" stroke="#d8d3c6" stroke-width="1.2"/>
+<rect x="1775" y="164" width="790" height="206" fill="#f4f2ec" stroke="#d8d3c6" stroke-width="1.2"/>
+<text x="1787" y="157" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">compartilhado</text>
+<text x="1787" y="184" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«biblioteca» mínima, sem regras de negócio (ADR-009, item 6)</text>
+<rect x="1795" y="208" width="163" height="24" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<rect x="1795" y="232" width="243" height="126" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<text x="1807" y="225" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">contratos-eventos</text>
+<text x="1807" y="254" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">esquemas versionados (ADR-008)</text>
+<text x="1807" y="272" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">PagamentoAprovado</text>
+<text x="1807" y="290" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">CapturaConcluida, … (catálogo)</text>
+<rect x="2048" y="208" width="106" height="24" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<rect x="2048" y="232" width="243" height="126" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<text x="2060" y="225" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">auth-token</text>
+<text x="2060" y="254" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">ValidadorJwt (jose)</text>
+<text x="2060" y="272" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">chave pública da Identidade</text>
+<rect x="2301" y="208" width="146" height="24" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<rect x="2301" y="232" width="243" height="126" fill="#fff" stroke="#55606b" stroke-width="1.2"/>
+<text x="2313" y="225" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">observabilidade</text>
+<text x="2313" y="254" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">logs com mascaramento</text>
+<text x="2313" y="272" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">métricas e saúde</text>
+<rect x="55" y="450" width="120" height="24" fill="#fbfaf7" stroke="#d8d3c6" stroke-width="1.2"/>
+<rect x="55" y="474" width="2510" height="1178" fill="#fbfaf7" stroke="#d8d3c6" stroke-width="1.2"/>
+<text x="67" y="467" font-size="14" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">servicos</text>
+<text x="67" y="494" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«subsistema» seis serviços de domínio, implantados de forma independente; nenhum importa outro serviço</text>
+<rect x="75.0" y="518" width="112" height="24" fill="#f4f2ec" stroke="#1d5c63" stroke-width="2.2"/>
+<rect x="75.0" y="542" width="478.0" height="744" fill="#f4f2ec" stroke="#1d5c63" stroke-width="2.2"/>
+<text x="87.0" y="535" font-size="14" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">identidade</text>
+<text x="87.0" y="562" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«serviço» C03, C04 · schema identidade</text>
+<rect x="91.0" y="588" width="90" height="24" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<rect x="91.0" y="612" width="446.0" height="90" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<text x="103.0" y="605" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">api</text>
+<text x="103.0" y="630" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">ContasController</text>
+<text x="103.0" y="648" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">AutenticacaoController</text>
+<text x="103.0" y="666" font-size="12.5" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">rotas admin (perfil admin)</text>
+<rect x="91.0" y="746" width="98" height="24" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<rect x="91.0" y="770" width="446.0" height="108" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<text x="103.0" y="763" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">aplicacao</text>
+<text x="103.0" y="788" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">CadastrarUsuario (REQ01)</text>
+<text x="103.0" y="806" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">RecuperarSenha (REQ02)</text>
+<text x="103.0" y="824" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">EfetuarLogin (REQ03)</text>
+<text x="103.0" y="842" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">EfetuarLogout (REQ04)</text>
+<text x="103.0" y="860" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">AtenderTitularLgpd</text>
+<rect x="91.0" y="922" width="90" height="24" fill="#dde9e8" stroke="#1d5c63" stroke-width="1.8"/>
+<rect x="91.0" y="946" width="446.0" height="144" fill="#dde9e8" stroke="#1d5c63" stroke-width="1.8"/>
+<text x="103.0" y="939" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">dominio</text>
+<text x="103.0" y="964" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">Conta</text>
+<text x="103.0" y="982" font-size="12.5" font-weight="500" fill="#1d5c63" text-anchor="start" xml:space="preserve" font-style="italic">«abstract» Perfil</text>
+<text x="103.0" y="1000" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">↳ Advogado · UsuarioComum</text>
+<text x="103.0" y="1018" font-size="12.5" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">↳ Empresa (D1, futuro)</text>
+<text x="103.0" y="1036" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">TokenRecuperacao</text>
+<text x="103.0" y="1054" font-size="12.5" font-weight="500" fill="#1d5c63" text-anchor="start" xml:space="preserve" font-style="italic">«port» RepositorioContas</text>
+<text x="103.0" y="1072" font-size="12.5" font-weight="500" fill="#1d5c63" text-anchor="start" xml:space="preserve" font-style="italic">«port» HashSenha</text>
+<rect x="91.0" y="1134" width="138" height="24" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<rect x="91.0" y="1158" width="446.0" height="108" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<text x="103.0" y="1151" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">infraestrutura</text>
+<text x="103.0" y="1176" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">RepositorioContasPrisma</text>
+<text x="103.0" y="1194" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">HashSenhaArgon2</text>
+<text x="103.0" y="1212" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">EmissorJwt (jose)</text>
+<text x="103.0" y="1230" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">CriptografiaCpf</text>
+<text x="103.0" y="1248" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">Outbox / PublicadorEventos</text>
+<polyline points="314.0,702 314.0,746" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="322.0" y="729" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import»</text>
+<polyline points="314.0,878 314.0,922" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="322.0" y="905" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import»</text>
+<polyline points="314.0,1134 314.0,1090" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="322.0" y="1117" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import» implementa ports</text>
+<rect x="573.0" y="518" width="190" height="24" fill="#f4f2ec" stroke="#1d5c63" stroke-width="2.2"/>
+<rect x="573.0" y="542" width="478.0" height="744" fill="#f4f2ec" stroke="#1d5c63" stroke-width="2.2"/>
+<text x="585.0" y="535" font-size="14" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">creditos-pagamentos</text>
+<text x="585.0" y="562" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«serviço» C05, C06, C07 · schema pagamentos (isolado)</text>
+<rect x="589.0" y="588" width="90" height="24" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<rect x="589.0" y="612" width="446.0" height="90" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<text x="601.0" y="605" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">api</text>
+<text x="601.0" y="630" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">PacotesController</text>
+<text x="601.0" y="648" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">PedidosController</text>
+<text x="601.0" y="666" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">WebhookMercadoPagoController</text>
+<text x="601.0" y="684" font-size="12.5" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">rotas admin de pacotes (D2)</text>
+<rect x="589.0" y="746" width="98" height="24" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<rect x="589.0" y="770" width="446.0" height="108" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<text x="601.0" y="763" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">aplicacao</text>
+<text x="601.0" y="788" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">ComprarCreditos (REQ05)</text>
+<text x="601.0" y="806" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">EfetuarPagamento (REQ06)</text>
+<text x="601.0" y="824" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">ProcessarNotificacaoPagamento</text>
+<text x="601.0" y="842" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">ReservarCredito · ConsumirCredito · DevolverCredito</text>
+<text x="601.0" y="860" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">ReconciliarPendentes</text>
+<rect x="589.0" y="922" width="90" height="24" fill="#dde9e8" stroke="#1d5c63" stroke-width="1.8"/>
+<rect x="589.0" y="946" width="446.0" height="144" fill="#dde9e8" stroke="#1d5c63" stroke-width="1.8"/>
+<text x="601.0" y="939" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">dominio</text>
+<text x="601.0" y="964" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">Pacote (dados, D2)</text>
+<text x="601.0" y="982" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">Pedido «máquina de estados»</text>
+<text x="601.0" y="1000" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">LancamentoCredito (imutável)</text>
+<text x="601.0" y="1018" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">Saldo</text>
+<text x="601.0" y="1036" font-size="12.5" font-weight="500" fill="#1d5c63" text-anchor="start" xml:space="preserve" font-style="italic">«port» ProvedorPagamento</text>
+<text x="601.0" y="1054" font-size="12.5" font-weight="500" fill="#1d5c63" text-anchor="start" xml:space="preserve" font-style="italic">«port» RepositorioLivroRazao</text>
+<rect x="589.0" y="1134" width="138" height="24" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<rect x="589.0" y="1158" width="446.0" height="108" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<text x="601.0" y="1151" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">infraestrutura</text>
+<text x="601.0" y="1176" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">AdaptadorMercadoPago</text>
+<text x="601.0" y="1194" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">CamadaAnticorrupcaoWebhook</text>
+<text x="601.0" y="1212" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">RepositorioLivroRazaoPrisma</text>
+<text x="601.0" y="1230" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">Outbox / PublicadorEventos</text>
+<text x="601.0" y="1248" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">ConsumidorEventosCaptura</text>
+<polyline points="812.0,702 812.0,746" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="820.0" y="729" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import»</text>
+<polyline points="812.0,878 812.0,922" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="820.0" y="905" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import»</text>
+<polyline points="812.0,1134 812.0,1090" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="820.0" y="1117" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import» implementa ports</text>
+<rect x="1071.0" y="518" width="90" height="24" fill="#f4f2ec" stroke="#1d5c63" stroke-width="2.2"/>
+<rect x="1071.0" y="542" width="478.0" height="1108" fill="#f4f2ec" stroke="#1d5c63" stroke-width="2.2"/>
+<text x="1083.0" y="535" font-size="14" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">captura</text>
+<text x="1083.0" y="562" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«serviço» C08–C11 · schema captura</text>
+<rect x="1087.0" y="588" width="90" height="24" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<rect x="1087.0" y="612" width="446.0" height="90" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<text x="1099.0" y="605" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">api</text>
+<text x="1099.0" y="630" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">RegistrosCapturaController</text>
+<text x="1099.0" y="648" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">SessaoVideoController</text>
+<text x="1099.0" y="666" font-size="12.5" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">rotas admin de expurgo</text>
+<rect x="1087.0" y="746" width="98" height="24" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<rect x="1087.0" y="770" width="446.0" height="108" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<text x="1099.0" y="763" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">aplicacao</text>
+<text x="1099.0" y="788" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">IniciarRegistro (REQ08)</text>
+<text x="1099.0" y="806" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">ConcluirGravacao (REQ09)</text>
+<text x="1099.0" y="824" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">ConcluirCaptura (REQ11)</text>
+<text x="1099.0" y="842" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">ConferirEAssinarManifesto</text>
+<text x="1099.0" y="860" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">ExpirarParados · Expurgar</text>
+<rect x="1087.0" y="922" width="90" height="24" fill="#dde9e8" stroke="#1d5c63" stroke-width="1.8"/>
+<rect x="1087.0" y="946" width="446.0" height="144" fill="#dde9e8" stroke="#1d5c63" stroke-width="1.8"/>
+<text x="1099.0" y="939" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">dominio</text>
+<text x="1099.0" y="964" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">RegistroConteudo «estados»</text>
+<text x="1099.0" y="982" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">Manifesto</text>
+<text x="1099.0" y="1000" font-size="12.5" font-weight="500" fill="#1d5c63" text-anchor="start" xml:space="preserve" font-style="italic">«interface» TipoCaptura</text>
+<text x="1099.0" y="1018" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">↳ CapturaTela · CapturaVideo</text>
+<text x="1099.0" y="1036" font-size="12.5" font-weight="500" fill="#1d5c63" text-anchor="start" xml:space="preserve" font-style="italic">«port» NavegadorCaptura</text>
+<text x="1099.0" y="1054" font-size="12.5" font-weight="500" fill="#1d5c63" text-anchor="start" xml:space="preserve" font-style="italic">«port» ArmazenamentoEvidencias</text>
+<text x="1099.0" y="1072" font-size="12.5" font-weight="500" fill="#1d5c63" text-anchor="start" xml:space="preserve" font-style="italic">«port» AssinadorManifesto</text>
+<rect x="1087.0" y="1134" width="138" height="24" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<rect x="1087.0" y="1158" width="446.0" height="108" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<text x="1099.0" y="1151" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">infraestrutura</text>
+<text x="1099.0" y="1176" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">NavegadorPlaywright</text>
+<text x="1099.0" y="1194" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">ArmazenamentoS3 (MinIO)</text>
+<text x="1099.0" y="1212" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">AssinadorEd25519 (cofre C19)</text>
+<text x="1099.0" y="1230" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">FilaCapturaRabbit</text>
+<text x="1099.0" y="1248" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">Outbox / PublicadorEventos</text>
+<polyline points="1310.0,702 1310.0,746" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="1318.0" y="729" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import»</text>
+<polyline points="1310.0,878 1310.0,922" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="1318.0" y="905" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import»</text>
+<polyline points="1310.0,1134 1310.0,1090" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="1318.0" y="1117" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import» implementa ports</text>
+<rect x="1087.0" y="1310" width="163" height="24" fill="#fff" stroke="#1d5c63" stroke-width="2.2"/>
+<rect x="1087.0" y="1334" width="446.0" height="108" fill="#fff" stroke="#1d5c63" stroke-width="2.2"/>
+<text x="1099.0" y="1327" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">gerador-evidencia</text>
+<text x="1099.0" y="1354" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«módulo comum aos workers» C11</text>
+<text x="1099.0" y="1370" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">ColetorMetadados (IP, DNS, TLS, HTML)</text>
+<text x="1099.0" y="1388" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">CalculadoraHash (SHA-256)</text>
+<text x="1099.0" y="1406" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">MontadorManifesto</text>
+<text x="1099.0" y="1424" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">GravadorConferidor → CapturaExecutada</text>
+<rect x="1087.0" y="1486" width="112" height="24" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<rect x="1087.0" y="1510" width="215.0" height="90" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<text x="1099" y="1503" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">worker-tela</text>
+<text x="1099" y="1530" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«processo» C09</text>
+<text x="1099" y="1548" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">captura de tela pela fila</text>
+<text x="1099" y="1566" font-size="12.5" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">ambiente isolado C20</text>
+<rect x="1318.0" y="1486" width="120" height="24" fill="#fff" stroke="#1d5c63" stroke-width="2.2"/>
+<rect x="1318.0" y="1510" width="215.0" height="90" fill="#fff" stroke="#1d5c63" stroke-width="2.2"/>
+<text x="1330" y="1503" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">worker-video</text>
+<text x="1330" y="1530" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«processo» C10</text>
+<text x="1330" y="1548" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">sessão ao vivo (CDP)</text>
+<text x="1330" y="1566" font-size="12.5" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">ambiente isolado C20</text>
+<polyline points="1194.0,1486 1194.0,1442" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<polyline points="1425.0,1486 1425.0,1442" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="1202" y="1469" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import»</text>
+<text x="1433" y="1469" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import»</text>
+
+<polyline points="1310.0,1310 1310.0,1266" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="1318.0" y="1293" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import»</text>
+<polyline points="1533.0,1350 1543.0,1350 1543.0,1006.0 1533.0,1006.0" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="1537.0" y="1150" font-size="12" font-weight="500" fill="#5b6670" text-anchor="end" xml:space="preserve">«import»</text>
+<rect x="1569.0" y="518" width="199" height="24" fill="#f4f2ec" stroke="#d8d3c6" stroke-width="1.2"/>
+<rect x="1569.0" y="542" width="478.0" height="744" fill="#f4f2ec" stroke="#d8d3c6" stroke-width="1.2"/>
+<text x="1581.0" y="535" font-size="14" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">registros-relatorios</text>
+<text x="1581.0" y="562" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«serviço» C12, C13, C14 · schema registros</text>
+<rect x="1585.0" y="588" width="90" height="24" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<rect x="1585.0" y="612" width="446.0" height="90" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<text x="1597.0" y="605" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">api</text>
+<text x="1597.0" y="630" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">ConsultaRegistrosController</text>
+<text x="1597.0" y="648" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">DownloadsController</text>
+<rect x="1585.0" y="746" width="98" height="24" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<rect x="1585.0" y="770" width="446.0" height="108" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<text x="1597.0" y="763" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">aplicacao</text>
+<text x="1597.0" y="788" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">ListarRegistros (REQ12)</text>
+<text x="1597.0" y="806" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">DetalharRegistro (REQ13)</text>
+<text x="1597.0" y="824" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">GerarRelatorio (REQ14)</text>
+<text x="1597.0" y="842" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">GerarZip (REQ15)</text>
+<text x="1597.0" y="860" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">RegistrarAuditoria</text>
+<rect x="1585.0" y="922" width="90" height="24" fill="#dde9e8" stroke="#1d5c63" stroke-width="1.8"/>
+<rect x="1585.0" y="946" width="446.0" height="144" fill="#dde9e8" stroke="#1d5c63" stroke-width="1.8"/>
+<text x="1597.0" y="939" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">dominio</text>
+<text x="1597.0" y="964" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">CopiaRegistro (só leitura)</text>
+<text x="1597.0" y="982" font-size="12.5" font-weight="500" fill="#1d5c63" text-anchor="start" xml:space="preserve" font-style="italic">«interface» FormatoSaida</text>
+<text x="1597.0" y="1000" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">↳ RelatorioPdf · ArquivoZip</text>
+<text x="1597.0" y="1018" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">EventoAuditoria (só inclusão)</text>
+<text x="1597.0" y="1036" font-size="12.5" font-weight="500" fill="#1d5c63" text-anchor="start" xml:space="preserve" font-style="italic">«port» ArmazenamentoEvidencias</text>
+<text x="1597.0" y="1054" font-size="12.5" font-weight="500" fill="#1d5c63" text-anchor="start" xml:space="preserve" font-style="italic">«port» ClienteIdentidade</text>
+<rect x="1585.0" y="1134" width="138" height="24" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<rect x="1585.0" y="1158" width="446.0" height="108" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<text x="1597.0" y="1151" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">infraestrutura</text>
+<text x="1597.0" y="1176" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">ConsumidorEventosCaptura</text>
+<text x="1597.0" y="1194" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">LinksAssinadosS3</text>
+<text x="1597.0" y="1212" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">GeradorPdfPlaywright</text>
+<text x="1597.0" y="1230" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">GeradorZipArchiver</text>
+<text x="1597.0" y="1248" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">ClienteHttpIdentidade</text>
+<polyline points="1808.0,702 1808.0,746" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="1816.0" y="729" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import»</text>
+<polyline points="1808.0,878 1808.0,922" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="1816.0" y="905" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import»</text>
+<polyline points="1808.0,1134 1808.0,1090" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="1816.0" y="1117" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import» implementa ports</text>
+<rect x="2067.0" y="518" width="121" height="24" fill="#f4f2ec" stroke="#d8d3c6" stroke-width="1.2"/>
+<rect x="2067.0" y="542" width="478.0" height="744" fill="#f4f2ec" stroke="#d8d3c6" stroke-width="1.2"/>
+<text x="2079.0" y="535" font-size="14" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">notificacao</text>
+<text x="2079.0" y="562" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«serviço» C15 · sem schema de negócio</text>
+<rect x="2083.0" y="588" width="90" height="24" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<rect x="2083.0" y="612" width="446.0" height="90" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<text x="2095.0" y="605" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">api</text>
+<text x="2095.0" y="630" font-size="12.5" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">apenas saúde (sem rotas de negócio)</text>
+<rect x="2083.0" y="746" width="98" height="24" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<rect x="2083.0" y="770" width="446.0" height="108" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<text x="2095.0" y="763" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">aplicacao</text>
+<text x="2095.0" y="788" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">EnviarConfirmacaoCadastro (REQ01)</text>
+<text x="2095.0" y="806" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">EnviarRecuperacaoSenha (REQ02)</text>
+<text x="2095.0" y="824" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">EnviarConfirmacaoPagamento (REQ07)</text>
+<text x="2095.0" y="842" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">EnviarConfirmacaoCaptura (REQ10, 11)</text>
+<rect x="2083.0" y="922" width="90" height="24" fill="#dde9e8" stroke="#1d5c63" stroke-width="1.8"/>
+<rect x="2083.0" y="946" width="446.0" height="144" fill="#dde9e8" stroke="#1d5c63" stroke-width="1.8"/>
+<text x="2095.0" y="939" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">dominio</text>
+<text x="2095.0" y="964" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">ModeloEmail</text>
+<text x="2095.0" y="982" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">Destinatario</text>
+<text x="2095.0" y="1000" font-size="12.5" font-weight="500" fill="#1d5c63" text-anchor="start" xml:space="preserve" font-style="italic">«port» EnvioEmail</text>
+<rect x="2083.0" y="1134" width="138" height="24" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<rect x="2083.0" y="1158" width="446.0" height="108" fill="#fff" stroke="#55606b" stroke-width="1.1"/>
+<text x="2095.0" y="1151" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">infraestrutura</text>
+<text x="2095.0" y="1176" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">ConsumidorEventos</text>
+<text x="2095.0" y="1194" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">AdaptadorSmtp (Nodemailer)</text>
+<text x="2095.0" y="1212" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">PoliticaNovasTentativas</text>
+<polyline points="2306.0,702 2306.0,746" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="2314.0" y="729" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import»</text>
+<polyline points="2306.0,878 2306.0,922" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="2314.0" y="905" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import»</text>
+<polyline points="2306.0,1134 2306.0,1090" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="2314.0" y="1117" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import» implementa ports</text>
+<path d="M75,1316 h954.0 l22,22 v282 h-976.0 z" fill="#fffdf4" stroke="#d8d3c6" stroke-width="1.2"/>
+<path d="M1029.0,1316 v22 h22" fill="none" stroke="#d8d3c6" stroke-width="1.2"/>
+<text x="93" y="1346" font-size="14" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">Regras de dependência</text>
+<text x="93" y="1372" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">1. Dependências só de fora para dentro: dominio não importa nada</text>
+<text x="93" y="1390" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">     de framework, banco, fila ou provedor (ADR-009, item 4).</text>
+<text x="93" y="1408" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">2. Ports ficam em dominio; adaptadores em infraestrutura (ADR-008).</text>
+<text x="93" y="1426" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">3. Nenhum serviço importa outro serviço. A comunicação é por HTTP /v1</text>
+<text x="93" y="1444" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">     (OpenAPI) ou por eventos da fila, usando compartilhado.contratos-eventos.</text>
+<text x="93" y="1462" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">4. Cada serviço acessa só o próprio schema no PostgreSQL (ADR-009, item 5).</text>
+<text x="93" y="1480" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">5. Novos tipos de captura e formatos de saída entram como classes que</text>
+<text x="93" y="1498" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">     implementam TipoCaptura / FormatoSaida (ADR-009, item 3).</text>
+<text x="93" y="1516" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">6. Bibliotecas externas nunca aparecem em dominio.</text>
+<path d="M1569.0,1316 h954.0 l22,22 v282 h-976.0 z" fill="#fffdf4" stroke="#d8d3c6" stroke-width="1.2"/>
+<path d="M2523.0,1316 v22 h22" fill="none" stroke="#d8d3c6" stroke-width="1.2"/>
+<text x="1587.0" y="1346" font-size="14" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">Pasta /infra (configuração, não é código de domínio)</text>
+<text x="1587.0" y="1372" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">Os componentes de infraestrutura e apoio não viram pacotes de código:</text>
+<text x="1587.0" y="1390" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">são configurados no Docker Compose da pasta /infra.</text>
+<text x="1587.0" y="1408" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">C16 Mensageria → RabbitMQ: filas duráveis, ack manual e DLQ</text>
+<text x="1587.0" y="1426" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">C17 Banco e Backup → PostgreSQL 16 + pgBackRest (um usuário por schema)</text>
+<text x="1587.0" y="1444" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">C18 Evidências → MinIO com Object Lock + cópia externa (mc mirror)</text>
+<text x="1587.0" y="1462" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">C19 Cofre → variáveis de ambiente / .env no MVP; OpenBao na evolução</text>
+<text x="1587.0" y="1480" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">C20 Ambiente isolado → rede Docker separada, Smokescreen, chrony</text>
+<text x="1587.0" y="1498" font-size="12.5" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">C21 Monitoramento → Prometheus + Alertmanager</text>
+<text x="1587.0" y="1516" font-size="12.5" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">Rastreio: C03–C04 identidade · C05–C07 creditos-pagamentos ·</text>
+<text x="1587.0" y="1534" font-size="12.5" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">C08–C11 captura · C12–C14 registros-relatorios · C15 notificacao</text>
+<rect x="55" y="1722" width="2510" height="190" fill="none" stroke="#55606b" stroke-dasharray="5 4" stroke-width="1.1"/>
+<text x="75" y="1750" font-size="12" font-weight="600" fill="#5b6670" text-anchor="start" xml:space="preserve">BIBLIOTECAS E SISTEMAS EXTERNOS  «external» — usadas por web, gateway, compartilhado (jose) e pelas camadas api (NestJS, Zod) e infraestrutura dos serviços; nunca por dominio</text>
+<rect x="75.0" y="1768" width="114" height="24" fill="#fff" stroke="#55606b" stroke-width="1.2" stroke-dasharray="5 4"/>
+<rect x="75.0" y="1792" width="296.5" height="100" fill="#fff" stroke="#55606b" stroke-width="1.2" stroke-dasharray="5 4"/>
+<text x="87.0" y="1785" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">prisma / pg</text>
+<text x="87.0" y="1812" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«external»</text>
+<text x="87.0" y="1830" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">PostgreSQL 16 (C17)</text>
+<text x="87.0" y="1848" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">um schema por serviço</text>
+<rect x="385.5" y="1768" width="90" height="24" fill="#fff" stroke="#55606b" stroke-width="1.2" stroke-dasharray="5 4"/>
+<rect x="385.5" y="1792" width="296.5" height="100" fill="#fff" stroke="#55606b" stroke-width="1.2" stroke-dasharray="5 4"/>
+<text x="397.5" y="1785" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">amqplib</text>
+<text x="397.5" y="1812" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«external»</text>
+<text x="397.5" y="1830" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">RabbitMQ (C16)</text>
+<text x="397.5" y="1848" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">filas duráveis + DLQ</text>
+<rect x="696.0" y="1768" width="98" height="24" fill="#fff" stroke="#55606b" stroke-width="1.2" stroke-dasharray="5 4"/>
+<rect x="696.0" y="1792" width="296.5" height="100" fill="#fff" stroke="#55606b" stroke-width="1.2" stroke-dasharray="5 4"/>
+<text x="708.0" y="1785" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">client-s3</text>
+<text x="708.0" y="1812" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«external»</text>
+<text x="708.0" y="1830" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">MinIO (C18)</text>
+<text x="708.0" y="1848" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">bucket imutável</text>
+<rect x="1006.5" y="1768" width="106" height="24" fill="#fff" stroke="#55606b" stroke-width="1.2" stroke-dasharray="5 4"/>
+<rect x="1006.5" y="1792" width="296.5" height="100" fill="#fff" stroke="#55606b" stroke-width="1.2" stroke-dasharray="5 4"/>
+<text x="1018.5" y="1785" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">playwright</text>
+<text x="1018.5" y="1812" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«external»</text>
+<text x="1018.5" y="1830" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">Chromium headless</text>
+<text x="1018.5" y="1848" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">captura, vídeo, PDF</text>
+<rect x="1317.0" y="1768" width="114" height="24" fill="#fff" stroke="#55606b" stroke-width="1.2" stroke-dasharray="5 4"/>
+<rect x="1317.0" y="1792" width="296.5" height="100" fill="#fff" stroke="#55606b" stroke-width="1.2" stroke-dasharray="5 4"/>
+<text x="1329.0" y="1785" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">mercadopago</text>
+<text x="1329.0" y="1812" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«external»</text>
+<text x="1329.0" y="1830" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">SDK checkout e Pix</text>
+<text x="1329.0" y="1848" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">webhooks (externo)</text>
+<rect x="1627.5" y="1768" width="106" height="24" fill="#fff" stroke="#55606b" stroke-width="1.2" stroke-dasharray="5 4"/>
+<rect x="1627.5" y="1792" width="296.5" height="100" fill="#fff" stroke="#55606b" stroke-width="1.2" stroke-dasharray="5 4"/>
+<text x="1639.5" y="1785" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">nodemailer</text>
+<text x="1639.5" y="1812" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«external»</text>
+<text x="1639.5" y="1830" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">SMTP (externo)</text>
+<text x="1639.5" y="1848" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">Mailpit em teste</text>
+<rect x="1938.0" y="1768" width="130" height="24" fill="#fff" stroke="#55606b" stroke-width="1.2" stroke-dasharray="5 4"/>
+<rect x="1938.0" y="1792" width="296.5" height="100" fill="#fff" stroke="#55606b" stroke-width="1.2" stroke-dasharray="5 4"/>
+<text x="1950.0" y="1785" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">jose / argon2</text>
+<text x="1950.0" y="1812" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«external»</text>
+<text x="1950.0" y="1830" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">JWT e hash de senha</text>
+<text x="1950.0" y="1848" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">node:crypto (Ed25519)</text>
+<rect x="2248.5" y="1768" width="154" height="24" fill="#fff" stroke="#55606b" stroke-width="1.2" stroke-dasharray="5 4"/>
+<rect x="2248.5" y="1792" width="296.5" height="100" fill="#fff" stroke="#55606b" stroke-width="1.2" stroke-dasharray="5 4"/>
+<text x="2260.5" y="1785" font-size="13" font-weight="650" fill="#1f2a33" text-anchor="start" xml:space="preserve">fastify / nestjs</text>
+<text x="2260.5" y="1812" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" xml:space="preserve">«external»</text>
+<text x="2260.5" y="1830" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">HTTP, OpenAPI, Zod</text>
+<text x="2260.5" y="1848" font-size="12" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">opossum, schedule</text>
+<polyline points="655,260 715,260" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="685" y="248" font-size="12" font-weight="500" fill="#5b6670" text-anchor="middle" xml:space="preserve">HTTP /v1</text>
+<polyline points="1715,260 1775,260" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="1745" y="248" font-size="12" font-weight="500" fill="#5b6670" text-anchor="middle" xml:space="preserve">«import»</text>
+<polyline points="1215.0,370 1215.0,450" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="1225.0" y="415" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«use» roteia HTTP /v1</text>
+<polyline points="2170.0,450 2170.0,370" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="2180.0" y="415" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import» (todos os serviços)</text>
+<polyline points="300,1652 300,1722" fill="none" stroke="#55606b" stroke-width="1.4" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="310" y="1694" font-size="12" font-weight="500" fill="#5b6670" text-anchor="start" xml:space="preserve">«import» (todas as camadas, exceto dominio)</text>
+<rect x="55" y="1942" width="2510" height="92" fill="#f4f2ec" stroke="#d8d3c6"/>
+<text x="75" y="1972" font-size="13" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">Legenda. Pasta com aba: pacote UML. Seta tracejada aberta: dependência («import» = usa elementos públicos do pacote; «use» = chamada em tempo de execução). Pacote dominio em azul-petróleo: núcleo de cada serviço, sem dependências externas.</text>
+<text x="75" y="1994" font-size="13" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">Borda espessa: componentes críticos detalhados (C02, C04, C06, C07, C08, C10, C11) e os pacotes de serviço que os contêm. «port» / «interface» em itálico: abstrações implementadas por infraestrutura (portas e adaptadores, ADR-008) ou por estratégias (ADR-009).</text>
+<text x="75" y="2016" font-size="13" font-weight="400" fill="#1f2a33" text-anchor="start" xml:space="preserve">Estrutura de pastas: /web, /gateway, /servicos/&lt;nome&gt;/{api,aplicacao,dominio,infraestrutura}, /compartilhado.</text></svg>
