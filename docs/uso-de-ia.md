@@ -1,11 +1,11 @@
 # Uso de IA no projeto Veridit
 
-Registro de onde e como a equipe usou inteligência artificial no projeto arquitetural do Veridit, para dar transparência ao professor e aos avaliadores. A IA foi usada como apoio de análise e revisão em cinco etapas. **Todas as decisões finais foram tomadas pelos membros da equipe.**
+Registro de onde e como a equipe usou inteligência artificial no projeto arquitetural do Veridit, para dar transparência ao professor e aos avaliadores. A IA foi usada como apoio de análise e revisão em seis etapas. **Todas as decisões finais foram tomadas pelos membros da equipe.**
 
 Ferramentas usadas:
 
-- **Claude (assistente de IA):** análise das características, comparação de estilos arquiteturais, revisão das [ADRs](adr/) e esboço dos diagramas.
-- **Graphify:** geração de um grafo de conhecimento a partir das ADRs, do [README](../README.md) e dos PDFs de requisitos e do enunciado, usado para consultas mais baratas e para checar a coerência entre os documentos.
+- **Claude (assistente de IA):** análise das características, comparação de estilos arquiteturais, revisão das [ADRs](adr/), revisão dos [componentes candidatos](componentes.md), proposta do [mapeamento de tecnologias](tecnologias.md), conferência das [táticas](taticas.md) e esboço dos diagramas.
+- **Graphify:** geração de um grafo de conhecimento a partir das ADRs, do [README](../README.md), dos componentes, das tecnologias e dos PDFs de requisitos e do enunciado, usado para consultas mais baratas e para checar a coerência entre os documentos.
 
 ## 1. Análise das características arquiteturais
 
@@ -54,24 +54,34 @@ Cada ADR tem no cabeçalho o campo **Apoio de IA**, que diz se a versão inicial
 
 Toda sugestão da IA foi lida e aprovada pela equipe antes de entrar na ADR.
 
-## 4. Graphify: custo de tokens e coerência entre ADRs
+## 4. Componentes, tecnologias e táticas
 
-O Graphify transformou o repositório num grafo de conhecimento com 202 nós, 515 relações e 8 comunidades temáticas, gerado em 17/10/2026 (pasta `graphify-out/`). Ele serviu a dois propósitos.
+A IA também apoiou os artefatos derivados das ADRs.
+
+- **[Componentes candidatos](componentes.md):** a IA cruzou os 21 componentes com as ADRs e apontou lacunas, como eventos sem componente responsável e componentes sem a ADR que os justifica. As correções foram registradas em revisões das ADRs e da lista de componentes.
+- **[Tecnologias](tecnologias.md):** a IA propôs o mapeamento das tecnologias gratuitas por camada e depois verificou, pelo grafo, se todo componente tinha tecnologia definida. Isso revelou lacunas como o ambiente isolado de captura (C20) sem ferramenta. A linguagem e os frameworks continuam como proposta, a ser registrada em ADR em sala, assim como o corte do MinIO de nó único no MVP (ADR-006).
+- **[Táticas](taticas.md):** extraídas das ADRs pela equipe; a IA conferiu se cada tática e o número do item correspondiam à seção "Decisão" da ADR.
+- **Papel da equipe:** decidiu a granularidade dos componentes, os componentes críticos e a pilha de tecnologias.
+
+## 5. Graphify: custo de tokens e coerência entre ADRs
+
+O Graphify transformou o repositório num grafo de conhecimento, gerado em 17/10/2026 e atualizado em 18/10/2026. A versão atual tem 311 nós, 1.170 relações e 10 comunidades temáticas. A pasta `graphify-out/` fica só na máquina local e não é versionada. Ele serviu a dois propósitos.
 
 **Reduzir o custo de tokens**
 
-- O grafo foi gerado uma vez, a partir das ADRs, do README e dos PDFs de requisitos e do enunciado.
-- Depois disso, as perguntas à IA usam consultas ao grafo (`graphify query`, `path` e `explain`), que devolvem só o trecho relevante, em vez de reler todos os documentos.
-- A regra está no [`CLAUDE.md`](../CLAUDE.md) do repositório: consultar o grafo antes de ler arquivos e atualizá-lo após mudanças.
+- O grafo foi gerado uma vez e depois atualizado de forma incremental: só os arquivos alterados são relidos.
+- As perguntas à IA usam consultas ao grafo (`graphify query`, `path` e `explain`), que devolvem só o trecho relevante, em vez de reler todos os documentos.
+- A regra fica num arquivo de instruções local do assistente (`CLAUDE.md`), fora do repositório: consultar o grafo antes de ler arquivos e atualizá-lo após mudanças.
+- A construção e as atualizações do grafo consumiram cerca de 1 milhão de tokens no total, em 8 execuções.
 
 **Analisar coerência e pontos cegos**
 
-- **Nós centrais:** mostrou que a ADR-011 (49 conexões) e a ADR-005 (35) ligam todas as comunidades, o que confirma o papel delas como base da proposta.
-- **Nós isolados:** apontou 31 itens com no máximo uma conexão, como o diagrama de módulos e as telas no Figma, indicando entregáveis ainda sem ligação com as ADRs.
-- **Relações inferidas:** 73 relações (14%) foram deduzidas pelo modelo e marcadas para a equipe confirmar ou descartar.
+- **Nós centrais:** a ADR-001 (58 conexões), a ADR-011 (48) e a ADR-005 (44) ligam quase todas as comunidades, o que confirma o papel delas como base da proposta. O documento de tecnologias (69) passou a ser a maior ponte entre as comunidades.
+- **Nós pouco conectados:** apontou 33 itens com no máximo uma conexão, como o diagrama de módulos, as telas no Figma e as entidades do Apêndice A, indicando entregáveis e conceitos ainda sem ligação com as ADRs.
+- **Relações inferidas:** 247 relações (21%) foram deduzidas pelo modelo e marcadas para a equipe confirmar ou descartar.
 - **Inconsistências:** ajudou a localizar divergências entre documentos, como o REQ11 duplicado no documento de requisitos.
 
-## 5. Esboços dos diagramas
+## 6. Esboços dos diagramas
 
 A IA gerou esboços iniciais dos diagramas do sistema, que a equipe usou como ponto de partida. Os diagramas entregues foram ajustados e finalizados pelos membros.
 
@@ -94,5 +104,6 @@ A IA foi usada como apoio de análise; todas as decisões finais foram tomadas p
 | Características arquiteturais | Apontar falhas, sobreposições e incoerências | Top 10 e top 4 finais |
 | Estilo arquitetural | Comparar estilos e trade-offs | Service-based, com monólito modular como plano B |
 | ADRs | Completar, corrigir e checar coerência (44 revisões registradas) | Aprovação de cada revisão |
-| Graphify | Reduzir tokens e mapear conexões entre ADRs | Confirmar ou descartar relações inferidas |
+| Componentes, tecnologias e táticas | Cruzar com as ADRs, propor tecnologias gratuitas e apontar lacunas | Componentes críticos e pilha de tecnologias |
+| Graphify | Reduzir tokens e mapear conexões entre os documentos | Confirmar ou descartar relações inferidas |
 | Diagramas | Esboços iniciais | Versões finais entregues |

@@ -10,6 +10,7 @@ O Veridit é uma plataforma de registro de evidências digitais: o usuário (adv
 - Componentes candidatos: [`docs/componentes.md`](docs/componentes.md)
 - Tecnologias: [`docs/tecnologias.md`](docs/tecnologias.md)
 - Táticas arquiteturais: [`docs/taticas.md`](docs/taticas.md)
+- Diagramas de componentes e de pacotes: [`docs/diagramas/`](docs/diagramas/)
 - Uso de IA: [`docs/uso-de-ia.md`](docs/uso-de-ia.md)
 - Telas do Sistema: [`Figma`](https://www.figma.com/design/lI57MWbUEiqdN2zTcip6Xl/Veridit---Telas?t=RpnFRIhWODCKBrml-1)
 
@@ -87,4 +88,4 @@ Não há requisito explícito de tempo de resposta no documento, mas a caracter�
 
 ### Restrição transversal: viabilidade (custo e prazo)
 
-Além das dez características, a arquitetura está sujeita a uma restrição de viabilidade: equipe acadêmica pequena, prazo curto e orçamento limitado de infraestrutura. Ela não é uma qualidade que o sistema entrega ao usuário, mas pesa em todas as decisões. Foi decisiva na escolha do estilo service-based em vez de microsserviços e na preferência por ferramentas open source executáveis localmente (ver ADR-004).
+Além das dez características, a arquitetura está sujeita a uma restrição de viabilidade: equipe acadêmica pequena, prazo curto e orçamento limitado de infraestrutura. Ela não é uma qualidade que o sistema entrega ao usuário, mas pesa em todas as decisões. Foi decisiva na escolha do estilo service-based em vez de microsserviços e na preferência por ferramentas open source executáveis localmente (ver ADR-011 e ADR-004).
