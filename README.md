@@ -11,6 +11,7 @@ O Veridit é uma plataforma de registro de evidências digitais: o usuário (adv
 - Tecnologias: [`docs/tecnologias.md`](docs/tecnologias.md)
 - Táticas arquiteturais: [`docs/taticas.md`](docs/taticas.md)
 - Uso de IA: [`docs/uso-de-ia.md`](docs/uso-de-ia.md)
+- Telas do Sistema: [`Figma`](https://www.figma.com/design/lI57MWbUEiqdN2zTcip6Xl/Veridit---Telas?t=RpnFRIhWODCKBrml-1)
 
 ---
 
