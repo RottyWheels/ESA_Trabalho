@@ -9,6 +9,7 @@ O Veridit é uma plataforma de registro de evidências digitais: o usuário (adv
 - Registros de decisões arquiteturais: [`docs/adr/`](docs/adr/)
 - Componentes candidatos: [`docs/componentes.md`](docs/componentes.md)
 - Tecnologias: [`docs/tecnologias.md`](docs/tecnologias.md)
+- Uso de IA: [`docs/uso-de-ia.md`](docs/uso-de-ia.md)
 
 ---
 
